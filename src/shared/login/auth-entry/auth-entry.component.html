@@ -1,0 +1,23 @@
+<div class="min-h-screen max-h-screen flex flex-col">
+    <!-- <a skipLocationChange (click)="signUpClicked()">Sign Up</a><br>
+    <a skipLocationChange (click)="signInClicked()">Sign In</a><br> -->
+    <div name="header" class="h-fit header p-4">
+        <img height="250px" width="200px" src="../../../assets/icons/procure-hub-high-resolution-logo-transparent.png"/>
+    </div>
+    <div name="main-content" class="flex flex-col sm:flex-row main">
+        <div name="features" class="features flex flex-row flex-wrap">
+            <div *ngFor="let feature of authPageFeatures" class="w-1/2 flex justify-center items-center">
+                <app-feature-card [name]="feature.name" [url]="feature.url" ></app-feature-card>
+            </div>
+        </div>
+        <div name="authCard" class="flex authCard items-center justify-center">
+            <div>
+                <router-outlet name="AuthOutlet"></router-outlet>
+            </div>
+        </div>
+    </div>
+    <footer name="footer" class="bg-white flex bottom-0 left-0 w-full justify-center items-center p-3 h-[100px] footer">
+        <p>&copy; 2023 Procure Hub. All rights reserved.</p>
+    </footer>
+    
+</div>

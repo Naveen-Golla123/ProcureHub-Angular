@@ -6,8 +6,7 @@ import { AuthEntryComponent } from './auth-entry/auth-entry.component';
 import { AuthRoutingModule } from './login-routing.module';
 import { FeatureCardComponent } from './feature-card/feature-card.component';
 import { AuthService } from '../services/AuthService.service';
-
-console.log("Hello Login Module")
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -18,7 +17,7 @@ console.log("Hello Login Module")
   ],
   bootstrap:[AuthEntryComponent],
   imports: [
-    CommonModule, AuthRoutingModule
+    CommonModule, AuthRoutingModule, FormsModule
   ],
   providers: [AuthService]
 })

@@ -1,0 +1,5 @@
+<div class="flex min-h-screen justify-center">
+    <div class="flex flex-wrap p-10 justify-center items-center">
+        <app-dashboard-cards routerLink="{{config.route}}" class="w-[250px] h-[200px]" *ngFor="let config of dashboardConfig" [config]="config"></app-dashboard-cards>
+    </div>
+</div>

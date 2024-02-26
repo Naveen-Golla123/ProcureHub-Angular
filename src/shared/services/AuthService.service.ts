@@ -10,9 +10,11 @@ export class AuthService {
 
     constructor(private http: HttpClient) { }
 
-    signIn() {
-        console.log("Auth Service SignIn is triggered !!");
-        return true;
+    signIn(email:string, password:string) {
+        return this.http.post<any>(environment.baseUrl + "api/authentication/login", {
+            "email" : email,
+            "password": password
+        });
     }
 
     signUp(user: User) {

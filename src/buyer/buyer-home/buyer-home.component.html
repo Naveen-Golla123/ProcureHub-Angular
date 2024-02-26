@@ -1,0 +1,26 @@
+<div class="flex min-h-screen min-w-screen bg-white">
+    <div class="bg-white rounded-3xl w-[17%] flex flex-col relative">
+        <div class="fixed">
+            <div>
+                <img class="py-[5vh] px-[2vh]" width="230vh" height="100px"
+                    src="../../assets/icons/procure-hub-high-resolution-logo-transparent.png" />
+            </div>
+            <div class="flex-grow">
+                <ul class="flex flex-col h-full">
+                    <li class="text-black p-5 text-xl font-bold" (click)="dashboardClicked()">
+                        <a class="cursor-pointer"> Dashboard</a>
+                    </li>
+                    <li class="text-black p-5 text-xl font-bold" (click)="settingsClicked()">
+                        <a class="cursor-pointer">Settings</a>
+                    </li>
+                    <li class="flex-grow flex flex-col-reverse text-black font-bold">
+                        <div class=" p-8 text-xl cursor-pointer" (click)="logOut()">Log Out</div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="bg-slate-100 w-full">
+        <router-outlet name="buyerHome"></router-outlet>
+    </div>
+</div>

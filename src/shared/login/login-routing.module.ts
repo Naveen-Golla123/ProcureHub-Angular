@@ -20,15 +20,7 @@ const routes: Routes = [
                 outlet: "AuthOutlet"
             }
         ]
-    },
-    // {
-    //     path: "signin",
-    //     component: SignInComponent
-    // },
-    // {
-    //     path: "signup",
-    //     component: SignUpComponent
-    // }
+    }
 ]
 
 @NgModule({

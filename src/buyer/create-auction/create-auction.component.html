@@ -1,0 +1,152 @@
+<app-page-header [config]="headerCofig"></app-page-header>
+<div class="relative w-full overflow-y-scroll">
+    <div class="px-16 py-10">
+        <mat-accordion class="example-headers-align" multi [togglePosition]="'before'">
+            <mat-expansion-panel [expanded]="true">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Basic Deatils
+                    </mat-panel-title>
+                    <mat-panel-description>
+                        Type your name and age
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+
+                <div class="flex flex-wrap">
+                    <div class="p-3">
+                        <label for="price" class="block text-sm font-medium leading-6 text-gray-900">Event Name</label>
+                        <div class="mt-1 rounded-md">
+                            <input type="text" name="price" id="price"
+                                class="rounded-md border-0 p-1 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                placeholder="">
+                        </div>
+                    </div>
+
+                    <div class="p-3">
+                        <label for="businessUnit" class="block text-sm font-medium leading-6 text-gray-900">Business
+                            Category</label>
+                        <div class="mt-1 rounded-md">
+                            <select name="businessUnit" id="businessUnit"
+                                class="rounded-md border-0 p-[7px] pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                <option>
+                                    Technology
+                                </option>
+                                <option>
+                                    E-commerce
+                                </option>
+                                <option>
+                                    Event Management
+                                </option>
+                                <option>
+                                    Construction
+                                </option>
+                                <option>
+                                    Logistics
+                                </option>
+                                <option>
+                                    Healthcare
+                                </option>
+                                <option>
+                                    Others
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="p-3">
+                        <label for="description" class="text-sm font-medium leading-6 text-gray-900">Event
+                            Description</label>
+                        <div class="mt-1 rounded-md">
+                            <textarea type="text" name="price" id="price"
+                                class="block rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                placeholder=""></textarea>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </mat-expansion-panel>
+
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Event Schedule
+                    </mat-panel-title>
+                    <mat-panel-description>
+                        Type the country name
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+                <div class="flex flex-wrap w-full">
+                    <div class="p-3 w-[40%]">
+                        <label for="startDate" class="text-sm font-medium leading-6 text-gray-900"> Start Date </label>
+                        <div class="mt-1 rounded-md">
+                            <input type="date" name="price" id="price"
+                                class="block rounded-md border-0 py-1.5 pl-7 pr-1 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                placeholder="" />
+                        </div>
+                    </div>
+                    <div class="p-3 w-[40%]">
+                        <label for="starttime" class="text-sm font-medium leading-6 text-gray-900">Start Time</label>
+                        <div class="mt-1 rounded-md">
+                            <input type="time" name="price" id="price"
+                                class="block rounded-md border-0 py-1.5 pl-7 pr-1 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                placeholder="" />
+                        </div>
+                    </div>
+                    <div class="p-3 w-[40%]">
+                        <label for="enddate" class="text-sm font-medium leading-6 text-gray-900">End Date</label>
+                        <div class="mt-1 rounded-md">
+                            <input type="date" name="price" id="price"
+                                class="block rounded-md border-0 py-1.5 pl-7 pr-1 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                placeholder="" />
+                        </div>
+                    </div>
+                    <div class="p-3 w-[40%]">
+                        <label for="endtime" class="text-sm font-medium text-gray-900">End Time</label>
+                        <div class="mt-1 rounded-md">
+                            <input type="time" name="price" id="price"
+                                class="block rounded-md border-0 py-1.5 pl-7 pr-1 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                placeholder="" />
+                        </div>
+                    </div>
+                </div>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Suppliers
+                    </mat-panel-title>
+                    <mat-panel-description>
+                        Type the country name
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+               <app-supplier></app-supplier>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Lots
+                    </mat-panel-title>
+                    <mat-panel-description>
+                        Inform the date you wish to travel
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+                <app-lot-grid></app-lot-grid>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </div>
+    <!-- <div class="bottom-0 fixed bg-white"> -->
+    <div class="flex justify-end px-16 py-10">
+        <button class="bg-primary text-white p-2 rounded-lg w-[200px] shadow-md hover:shadow-2xl ">Create</button>
+    </div>
+    <!-- <div class="container"> 
+        <div class="spinner-frame"> 
+            <div class="spinner-cover"></div> 
+            <div class="spinner-bar">Hello</div>
+        </div>
+    </div> -->
+    <!-- </div> -->
+</div>

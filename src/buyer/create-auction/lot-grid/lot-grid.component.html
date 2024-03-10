@@ -6,7 +6,7 @@
                     fontIcon="delete"></mat-icon>
                 <span class="px-1">Delete</span>
             </div>
-            <div class="flex px-5 cursor-pointer" (click)="openLotDetails()">
+            <div class="flex px-5 cursor-pointer" (click)="addLot()">
                 <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="add"></mat-icon>
                 <span class="px-1">Add</span>
             </div>
@@ -36,6 +36,15 @@
                 <ng-container matColumnDef="totalPrice">
                     <th mat-header-cell *matHeaderCellDef> Lot Price </th>
                     <td mat-cell *matCellDef="let element"> {{element.totalPrice}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="edit">
+                    <th mat-header-cell *matHeaderCellDef> Lot Price </th>
+                    <td mat-cell *matCellDef="let element"><mat-icon (click)="editLot(element)" class="cursor-pointer"
+                        aria-hidden="false"
+                        aria-label="edit"
+                        fontIcon="edit"
+                      ></mat-icon></td>
                 </ng-container>
 
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

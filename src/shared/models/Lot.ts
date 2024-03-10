@@ -3,10 +3,14 @@ export interface Lot {
     description: string;
     items: Item[];
     totalPrice: number;
+    id:number;
 }
 
 export interface Item {
     name: string;
     basePrice: number;
-    qunatity: number;
+    quantity: number;
+    UiId: number;
+    _id:number;
+    callback: any;
 }

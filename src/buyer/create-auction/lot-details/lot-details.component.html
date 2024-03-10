@@ -7,7 +7,7 @@
             <div class="p-3">
                 <label for="price" class="block text-sm font-medium text-gray-900">Name</label>
                 <div class="mt-1 rounded-md">
-                    <input type="text" name="price" id="price"
+                    <input type="text" name="price" id="price" [(ngModel)]="lot.name"
                         class="rounded-md border-0 p-1 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         placeholder="">
                 </div>
@@ -15,7 +15,7 @@
             <div class="p-3">
                 <label for="Description" class="block text-sm font-medium text-gray-900">Description</label>
                 <div class="mt-1 rounded-md">
-                    <input type="text" name="price" id="price"
+                    <input type="text" name="price" id="price" [(ngModel)]="lot.description"
                         class="rounded-md border-0 p-1 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         placeholder="">
                 </div>
@@ -24,11 +24,16 @@
     </div>
 
     <div id="lotItems" class="flex flex-col lots-pop-up-body">
-        <div name="lotItem" class="px-5 py-2" *ngFor="let item of LotItems">
-            <app-lot-item [config]="item"></app-lot-item>
+        <div name="lotItem" class="px-5 py-2" *ngFor="let item of lot.items">
+            <app-lot-item [config]="item" (configChange)="configChange(item)"></app-lot-item>
         </div>
     </div>
+
+    <div name="addItem" class="px-5">
+        <span class="text-primary text-sm cursor-pointer" (click)="addItem()">+ Add Item</span>
+    </div>
+
     <div class="w-full footer flex flex-row-reverse items-center">
-            <button class="bg-primary text-white p-1 rounded-2xl w-[100px] shadow-md hover:shadow-2xl ">Save</button>
+            <button class="bg-primary text-white p-1 rounded-2xl font-bold w-[100px] shadow-md hover:shadow-2xl " (click)="saveLot()">Save</button>
     </div>
 </div>

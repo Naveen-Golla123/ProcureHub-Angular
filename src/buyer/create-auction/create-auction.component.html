@@ -16,7 +16,7 @@
                     <div class="p-3">
                         <label for="price" class="block text-sm font-medium leading-6 text-gray-900">Event Name</label>
                         <div class="mt-1 rounded-md">
-                            <input type="text" name="price" id="price"
+                            <input type="text" name="price" id="price" [(ngModel)]="auction.name"
                                 class="rounded-md border-0 p-1 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 placeholder="">
                         </div>
@@ -57,7 +57,7 @@
                         <label for="description" class="text-sm font-medium leading-6 text-gray-900">Event
                             Description</label>
                         <div class="mt-1 rounded-md">
-                            <textarea type="text" name="price" id="price"
+                            <textarea type="text" name="price" id="price" [(ngModel)]="auction.description"
                                 class="block rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 placeholder=""></textarea>
                         </div>
@@ -68,7 +68,7 @@
 
             </mat-expansion-panel>
 
-            <mat-expansion-panel>
+            <mat-expansion-panel disabled="{{isNewAuction}}">
                 <mat-expansion-panel-header>
                     <mat-panel-title>
                         Event Schedule
@@ -81,7 +81,7 @@
                     <div class="p-3 w-[40%]">
                         <label for="startDate" class="text-sm font-medium leading-6 text-gray-900"> Start Date </label>
                         <div class="mt-1 rounded-md">
-                            <input type="date" name="price" id="price"
+                            <input type="date" name="price" id="price" [(ngModel)]="auction.startdate"
                                 class="block rounded-md border-0 py-1.5 pl-7 pr-1 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 placeholder="" />
                         </div>
@@ -89,7 +89,7 @@
                     <div class="p-3 w-[40%]">
                         <label for="starttime" class="text-sm font-medium leading-6 text-gray-900">Start Time</label>
                         <div class="mt-1 rounded-md">
-                            <input type="time" name="price" id="price"
+                            <input type="time" name="price" id="price" [(ngModel)]="auction.startTime"
                                 class="block rounded-md border-0 py-1.5 pl-7 pr-1 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 placeholder="" />
                         </div>
@@ -97,7 +97,7 @@
                     <div class="p-3 w-[40%]">
                         <label for="enddate" class="text-sm font-medium leading-6 text-gray-900">End Date</label>
                         <div class="mt-1 rounded-md">
-                            <input type="date" name="price" id="price"
+                            <input type="date" name="price" id="price" [(ngModel)]="auction.endDate"
                                 class="block rounded-md border-0 py-1.5 pl-7 pr-1 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 placeholder="" />
                         </div>
@@ -105,7 +105,7 @@
                     <div class="p-3 w-[40%]">
                         <label for="endtime" class="text-sm font-medium text-gray-900">End Time</label>
                         <div class="mt-1 rounded-md">
-                            <input type="time" name="price" id="price"
+                            <input type="time" name="price" id="price" [(ngModel)]="auction.endTime"
                                 class="block rounded-md border-0 py-1.5 pl-7 pr-1 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 placeholder="" />
                         </div>
@@ -113,7 +113,7 @@
                 </div>
             </mat-expansion-panel>
 
-            <mat-expansion-panel>
+            <mat-expansion-panel disabled="{{isNewAuction}}">
                 <mat-expansion-panel-header>
                     <mat-panel-title>
                         Suppliers
@@ -125,7 +125,7 @@
                <app-supplier></app-supplier>
             </mat-expansion-panel>
 
-            <mat-expansion-panel>
+            <mat-expansion-panel disabled="{{isNewAuction}}">
                 <mat-expansion-panel-header>
                     <mat-panel-title>
                         Lots
@@ -134,14 +134,19 @@
                         Inform the date you wish to travel
                     </mat-panel-description>
                 </mat-expansion-panel-header>
-                <app-lot-grid></app-lot-grid>
+                <app-lot-grid [eventId]="eventId"></app-lot-grid>
             </mat-expansion-panel>
         </mat-accordion>
     </div>
     <!-- <div class="bottom-0 fixed bg-white"> -->
     <div class="flex justify-end px-16 py-10">
-        <button class="bg-primary text-white p-2 rounded-lg w-[200px] shadow-md hover:shadow-2xl ">Create</button>
+        <button class="bg-white text-primary p-2 rounded-lg w-[200px] shadow-md hover:shadow-2xl mr-5" (click)="createEvent()">{{'Cancel'}}</button> 
+        
+        <button class="bg-primary text-white p-2 rounded-lg w-[200px] shadow-md hover:shadow-2xl mr-5" (click)="saveAsDraft()">{{'Save As Draft'}}</button>
+
+        <button class="bg-primary text-white p-2 rounded-lg w-[200px] shadow-md hover:shadow-2xl mr-5" (click)="createEvent()">{{'Submit'}}</button>
     </div>
+
     <!-- <div class="container"> 
         <div class="spinner-frame"> 
             <div class="spinner-cover"></div> 
@@ -150,3 +155,4 @@
     </div> -->
     <!-- </div> -->
 </div>
+<!-- <ngx-spinner type="ball-scale-multiple" [fullScreen]="false"></ngx-spinner> -->

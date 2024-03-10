@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/shared/services/AuthService.service';
 import { DataManagerService } from 'src/shared/services/DataManager.service';
 
@@ -16,6 +17,7 @@ export class SignInComponent {
   constructor(private router: Router, 
     private route: ActivatedRoute, 
     private authService: AuthService,
+    private toastr: ToastrService,
     private dataManagerService: DataManagerService) {
     this.email = "";
     this.password = "";
@@ -33,6 +35,8 @@ export class SignInComponent {
       if (result && result.status) {
         this.dataManagerService.setToken(result.token);
         this.router.navigate(['/buyerHome'], { relativeTo: this.route.parent })
+      } else {
+        this.toastr.success('Hello world!', 'Toastr fun!');
       }
     });
   }

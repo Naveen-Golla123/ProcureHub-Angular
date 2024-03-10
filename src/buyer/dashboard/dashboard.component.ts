@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DataManagerService } from 'src/shared/services/DataManager.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -8,39 +9,50 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class DashboardComponent {
 
-    public dashboardConfig:any = [
-      {
-        icon : "plus.png",
-        name : "Create Auction",
-        route: "../createauction"
-      },
-      {
-        icon : "bid.png",
-        name: "Auctions",
-        route: "../createauction"
-      },
-      {
-        icon: "supplier.png",
-        name: "Suppliers",
-        route: "../createauction"
-      },
-      {
-        icon : "gear.png",
-        name: "Settings",
-        route: "../settings"
-      }
-    ];
-
-
-    constructor(private router: Router, 
-      private route: ActivatedRoute)
+  public dashboardConfig: any = [
     {
-      console.log("Hello world");
+      icon: "plus.png",
+      name: "Create Auction",
+      route: "../createauction",
+      callback: ()=>{this.onCreateAuctionCicked()},
+      params: {
+        eventId: 12
+      }
+    },
+    {
+      icon: "bid.png",
+      name: "Auctions",
+      route: "../bidsList",
+      callback: ()=>{},
+      params: {
+      }
+    },
+    {
+      icon: "supplier.png",
+      name: "Suppliers",
+      route: "../createauction",
+      callback: ()=>{},
+      params: {
+      }
+    },
+    {
+      icon: "gear.png",
+      name: "Settings",
+      route: "../settings",
+      callback: ()=>{},
+      params: {
+      }
     }
+  ];
 
-    
 
-    // onItemClicked(route: string) {
-    //   this.router.navigate([{outlets: { buyerHome : [route]}}], { skipLocationChange: true});
-    // }
+  constructor(private router: Router,
+    private route: ActivatedRoute,
+    private dms:DataManagerService) {
+    console.log("Hello world");
+  }
+
+  onCreateAuctionCicked() {
+    this.dms.setDataStoreValue("eventCode", 0);
+  }
 }

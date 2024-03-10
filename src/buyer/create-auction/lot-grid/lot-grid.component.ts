@@ -1,9 +1,11 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Lot } from 'src/shared/models/Lot';
 import { MatDialog } from '@angular/material/dialog'
 import { LotDetailsComponent } from '../lot-details/lot-details.component';
+import { LotService } from 'src/shared/services/LotService.service';
+import { DataManagerService } from 'src/shared/services/DataManager.service';
 
 @Component({
   selector: 'app-lot-grid',
@@ -14,29 +16,34 @@ export class LotGridComponent {
   public lots: Lot[] = [];
   dataSource = new MatTableDataSource<Lot>();
   selection = new SelectionModel<Lot>(true, []);
-  displayedColumns: string[] = ['select', 'name', 'totalPrice'];
+  displayedColumns: string[] = ['select', 'name', 'totalPrice', "edit"];
+  @Input('eventId') eventId: any;
 
-  constructor(private dialog: MatDialog) {
-
+  constructor(private dialog: MatDialog,
+    private lotService: LotService, private dms: DataManagerService) {
+      // this.eventId = this.dms.getDataStoreValue("eventId");
   }
 
   ngOnInit(): void {
-    for (var i = 1; i < 10; i++) {
-      this.lots.push({
-        name: "Supplier Name" + i,
-        totalPrice: i * 100,
-        description: "description",
-        items: [
-          {
-            name: "Computer",
-            basePrice: 100,
-            qunatity: 2
-          }
-        ]
-      })
-    }
+    let self = this;
+    self.getAllLots();
 
-    this.dataSource.data = this.lots;
+
+    // for (var i = 1; i < 10; i++) {
+    //   this.lots.push({
+    //     name: "Supplier Name" + i,
+    //     totalPrice: i * 100,
+    //     description: "description",
+    //     items: [
+    //       {
+    //         name: "Computer",
+    //         basePrice: 100,
+    //         qunatity: 2,
+    //         UiId: 1
+    //       }
+    //     ]
+    //   })
+    // }
   }
 
   isAllSelected() {
@@ -56,15 +63,53 @@ export class LotGridComponent {
     this.selection.selected.forEach(s => console.log(s.name));
   }
 
-  openLotDetails() {
+  openLotDetails(data: any) {
     let dialogRef = this.dialog.open(LotDetailsComponent, {
       width: "100%",
-      data: {name: "", animal: "animalname"},
+      data: data,
       height: "800px"
     });
 
-    dialogRef.afterClosed().subscribe(result=>{
+    dialogRef.afterClosed().subscribe(result => {
       console.log(result);
+      this.getAllLots();
     });
   }
+
+  addLot() {
+    this.openLotDetails(null);
+  }
+
+  processLotData(result: any) {
+    let self = this;
+    this.lots = [];
+    if (result) {
+      result.forEach((lot_: any) => {
+        self.lots.push({
+          name: lot_.name,
+          description: lot_.description,
+          totalPrice: 0,
+          items: lot_.has_item,
+          id: lot_._id
+        })
+      })
+    }
+    this.dataSource.data = this.lots;
+  }
+
+  editLot(element: Lot) {
+    if (element) {
+      this.openLotDetails(element);
+    }
+  }
+
+  getAllLots(){
+    let self = this;
+    // this.lots
+    this.lotService.getAllLots(this.eventId).subscribe(result => {
+      console.log(result);
+      self.processLotData(result);
+    });
+  }
+
 }

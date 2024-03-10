@@ -1,7 +1,11 @@
 <div class="h-[10vh] flex justify-start items-center px-10 py-10">
     <div class="px-1 cursor-pointer" (click)="navigateBack()"><img src="../../../assets/icons/back-26.png"/></div>
-    <p class="px-3 text-xl font-semibold
-    " >{{config.title}}</p>
+    <div class="flex flex-col px-3">
+        <p class="mx-3 text-xl font-semibold marginZero
+        " >{{config.title}}</p>
+        <span *ngIf="config.enableSubTitle" class=" px-1 bg-slate-400 w-fit rounded-lg">{{config.subTitle}}</span>
+    </div>
+
 </div>
 
 

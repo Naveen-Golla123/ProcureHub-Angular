@@ -19,6 +19,11 @@ const routes: Routes = [
         outlet: "buyerHome"
       },
       {
+        path: 'bidsList',
+        loadChildren: () => import('./bit-list/bit-list.module').then(m=>m.BitListModule),
+        outlet: "buyerHome"
+      },
+      {
         path: 'settings',
         loadChildren: ()=> import('./settings/setting.module').then(m=>m.SettingModule),
         outlet: "buyerHome"

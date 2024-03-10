@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CreateAuctionComponent } from './create-auction.component';
 import { RouterModule, Routes } from '@angular/router';
@@ -13,6 +13,11 @@ import { LotGridComponent } from './lot-grid/lot-grid.component';
 import { LotDetailsComponent } from './lot-details/lot-details.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { LotItemComponent } from './lot-item/lot-item.component';
+import { EventService } from 'src/shared/services/EventService.service';
+import { FormsModule } from '@angular/forms';
+import { LotService } from 'src/shared/services/LotService.service';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const routes: Routes = [
   {
@@ -39,11 +44,14 @@ const routes: Routes = [
     MatCheckboxModule,
     MatTableModule,
     MatIconModule,
-    MatDialogModule
+    MatDialogModule,
+    FormsModule
   ],
   exports:[
     RouterModule
-  ]
+  ],
+  providers: [EventService, LotService],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class CreateAuctionModule { }
 

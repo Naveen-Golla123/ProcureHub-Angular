@@ -1,4 +1,4 @@
-<app-page-header [config]="headerCofig"></app-page-header>
+<app-page-header [config]="headerConfig"></app-page-header>
 <div class="relative w-full overflow-y-scroll">
     <div class="px-16 py-10">
         <mat-accordion class="example-headers-align" multi [togglePosition]="'before'">
@@ -7,16 +7,16 @@
                     <mat-panel-title>
                         Basic Deatils
                     </mat-panel-title>
-                    <mat-panel-description>
+                    <!-- <mat-panel-description>
                         Type your name and age
-                    </mat-panel-description>
+                    </mat-panel-description> -->
                 </mat-expansion-panel-header>
 
                 <div class="flex flex-wrap">
                     <div class="p-3">
                         <label for="price" class="block text-sm font-medium leading-6 text-gray-900">Event Name</label>
                         <div class="mt-1 rounded-md">
-                            <input type="text" name="price" id="price" [(ngModel)]="auction.name"
+                            <input type="text" name="price" id="price" [(ngModel)]="auction.name" [disabled]="isReadOnly"
                                 class="rounded-md border-0 p-1 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 placeholder="">
                         </div>
@@ -26,7 +26,7 @@
                         <label for="businessUnit" class="block text-sm font-medium leading-6 text-gray-900">Business
                             Category</label>
                         <div class="mt-1 rounded-md">
-                            <select name="businessUnit" id="businessUnit"
+                            <select name="businessUnit" id="businessUnit" [disabled]="isReadOnly"
                                 class="rounded-md border-0 p-[7px] pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                 <option>
                                     Technology
@@ -57,7 +57,7 @@
                         <label for="description" class="text-sm font-medium leading-6 text-gray-900">Event
                             Description</label>
                         <div class="mt-1 rounded-md">
-                            <textarea type="text" name="price" id="price" [(ngModel)]="auction.description"
+                            <textarea type="text" name="price" id="price" [(ngModel)]="auction.description" [disabled]="isReadOnly"
                                 class="block rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 placeholder=""></textarea>
                         </div>
@@ -68,20 +68,20 @@
 
             </mat-expansion-panel>
 
-            <mat-expansion-panel disabled="{{isNewAuction}}">
+            <mat-expansion-panel>
                 <mat-expansion-panel-header>
                     <mat-panel-title>
                         Event Schedule
                     </mat-panel-title>
-                    <mat-panel-description>
+                    <!-- <mat-panel-description>
                         Type the country name
-                    </mat-panel-description>
+                    </mat-panel-description> -->
                 </mat-expansion-panel-header>
                 <div class="flex flex-wrap w-full">
                     <div class="p-3 w-[40%]">
                         <label for="startDate" class="text-sm font-medium leading-6 text-gray-900"> Start Date </label>
                         <div class="mt-1 rounded-md">
-                            <input type="date" name="price" id="price" [(ngModel)]="auction.startdate"
+                            <input type="date" name="price" id="price" [(ngModel)]="auction.startdate" [disabled]="isReadOnly"
                                 class="block rounded-md border-0 py-1.5 pl-7 pr-1 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 placeholder="" />
                         </div>
@@ -89,7 +89,7 @@
                     <div class="p-3 w-[40%]">
                         <label for="starttime" class="text-sm font-medium leading-6 text-gray-900">Start Time</label>
                         <div class="mt-1 rounded-md">
-                            <input type="time" name="price" id="price" [(ngModel)]="auction.startTime"
+                            <input type="time" name="price" id="price" [(ngModel)]="auction.startTime" [disabled]="isReadOnly"
                                 class="block rounded-md border-0 py-1.5 pl-7 pr-1 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 placeholder="" />
                         </div>
@@ -97,7 +97,7 @@
                     <div class="p-3 w-[40%]">
                         <label for="enddate" class="text-sm font-medium leading-6 text-gray-900">End Date</label>
                         <div class="mt-1 rounded-md">
-                            <input type="date" name="price" id="price" [(ngModel)]="auction.endDate"
+                            <input type="date" name="price" id="price" [(ngModel)]="auction.endDate" [disabled]="isReadOnly"
                                 class="block rounded-md border-0 py-1.5 pl-7 pr-1 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 placeholder="" />
                         </div>
@@ -105,7 +105,7 @@
                     <div class="p-3 w-[40%]">
                         <label for="endtime" class="text-sm font-medium text-gray-900">End Time</label>
                         <div class="mt-1 rounded-md">
-                            <input type="time" name="price" id="price" [(ngModel)]="auction.endTime"
+                            <input type="time" name="price" id="price" [(ngModel)]="auction.endTime" [disabled]="isReadOnly"
                                 class="block rounded-md border-0 py-1.5 pl-7 pr-1 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 placeholder="" />
                         </div>
@@ -113,28 +113,28 @@
                 </div>
             </mat-expansion-panel>
 
-            <mat-expansion-panel disabled="{{isNewAuction}}">
+            <mat-expansion-panel *ngIf="!isNewAuction" disabled="{{isNewAuction}}">
                 <mat-expansion-panel-header>
                     <mat-panel-title>
                         Suppliers
                     </mat-panel-title>
-                    <mat-panel-description>
+                    <!-- <mat-panel-description>
                         Type the country name
-                    </mat-panel-description>
+                    </mat-panel-description> -->
                 </mat-expansion-panel-header>
-               <app-supplier></app-supplier>
+               <app-supplier [eventId]="eventId" [readOnly]="isReadOnly"></app-supplier>
             </mat-expansion-panel>
 
-            <mat-expansion-panel disabled="{{isNewAuction}}">
+            <mat-expansion-panel *ngIf="!isNewAuction"  disabled="{{isNewAuction}}">
                 <mat-expansion-panel-header>
                     <mat-panel-title>
                         Lots
                     </mat-panel-title>
-                    <mat-panel-description>
+                    <!-- <mat-panel-description>
                         Inform the date you wish to travel
-                    </mat-panel-description>
+                    </mat-panel-description> -->
                 </mat-expansion-panel-header>
-                <app-lot-grid [eventId]="eventId"></app-lot-grid>
+                <app-lot-grid [eventId]="eventId" [readOnly]="isReadOnly"></app-lot-grid>
             </mat-expansion-panel>
         </mat-accordion>
     </div>
@@ -144,7 +144,7 @@
         
         <button class="bg-primary text-white p-2 rounded-lg w-[200px] shadow-md hover:shadow-2xl mr-5" (click)="saveAsDraft()">{{'Save As Draft'}}</button>
 
-        <button class="bg-primary text-white p-2 rounded-lg w-[200px] shadow-md hover:shadow-2xl mr-5" (click)="createEvent()">{{'Submit'}}</button>
+        <button class="bg-primary text-white p-2 rounded-lg w-[200px] shadow-md hover:shadow-2xl mr-5" *ngIf="!isNewAuction" (click)="submitAuction()">{{'Submit'}}</button>
     </div>
 
     <!-- <div class="container"> 

@@ -6,6 +6,8 @@ import { MatDialog } from '@angular/material/dialog'
 import { LotDetailsComponent } from '../lot-details/lot-details.component';
 import { LotService } from 'src/shared/services/LotService.service';
 import { DataManagerService } from 'src/shared/services/DataManager.service';
+import { ToastrService } from 'ngx-toastr';
+import { SupplierRepositoryComponent } from '../supplier-repository/supplier-repository.component';
 
 @Component({
   selector: 'app-lot-grid',
@@ -18,17 +20,17 @@ export class LotGridComponent {
   selection = new SelectionModel<Lot>(true, []);
   displayedColumns: string[] = ['select', 'name', 'totalPrice', "edit"];
   @Input('eventId') eventId: any;
+  @Input("readOnly") readOnly: any;
 
   constructor(private dialog: MatDialog,
+    private toastService: ToastrService,
     private lotService: LotService, private dms: DataManagerService) {
-      // this.eventId = this.dms.getDataStoreValue("eventId");
+    // this.eventId = this.dms.getDataStoreValue("eventId");
   }
 
   ngOnInit(): void {
     let self = this;
     self.getAllLots();
-
-
     // for (var i = 1; i < 10; i++) {
     //   this.lots.push({
     //     name: "Supplier Name" + i,
@@ -76,8 +78,20 @@ export class LotGridComponent {
     });
   }
 
+
   addLot() {
     this.openLotDetails(null);
+  }
+
+  async deleteLot() {
+     var selectedLots: any[] = [];
+     await this.selection.selected.forEach((lot:any)=>{
+        selectedLots.push(lot.id);
+     })
+     this.lotService.deleteLot(selectedLots).subscribe((result:any)=>{
+        this.toastService.success("Lots deleted successfully!!");
+        this.getAllLots();
+     });
   }
 
   processLotData(result: any) {
@@ -103,7 +117,7 @@ export class LotGridComponent {
     }
   }
 
-  getAllLots(){
+  getAllLots() {
     let self = this;
     // this.lots
     this.lotService.getAllLots(this.eventId).subscribe(result => {

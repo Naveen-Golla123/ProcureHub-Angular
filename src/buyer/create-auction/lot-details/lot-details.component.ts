@@ -69,7 +69,13 @@ export class LotDetailsComponent implements OnInit {
         deleteItem: (element: any) => this.deleteItem(element)
       }
     };
-    this.lot.items.push(newItem);
+    if(this.lot.items){
+      this.lot.items.push(newItem);
+    } else {
+      this.lot.items = [];
+      this.lot.items.push(newItem);
+    }
+    
   }
 
   onItemChange() {
@@ -81,7 +87,7 @@ export class LotDetailsComponent implements OnInit {
     var index = this.lot.items.findIndex((i: any) => { return i.UiId == item.UiId });
     this.lot.items.splice(index, 1);
     if (item._id != 0) {
-      await this.lotService.deleteItem(item._id);
+      await this.lotService.deleteItem(item._id).toPromise();
     }
     this.toastService.success(`${item.name} item deleted successfully`);
   }
@@ -89,6 +95,7 @@ export class LotDetailsComponent implements OnInit {
   saveLot() {
     this.lotService.saveLot(this.lot).subscribe(result => {
       console.log(result);
+      this.toastService.success(`Lot Saved Successfully`);
       this.dialogRef.close();
     });
   }

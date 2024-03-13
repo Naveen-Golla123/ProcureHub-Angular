@@ -8,6 +8,8 @@ import { EventService } from 'src/shared/services/EventService.service';
 import { ActivatedRoute } from '@angular/router';
 import { Auction } from 'src/shared/models/Auction.model';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { ToastrService } from 'ngx-toastr';
+import { AuctionStatus } from 'src/shared/models/AuctionStatus.enum';
 
 @Component({
   selector: 'app-create-auction',
@@ -16,7 +18,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 export class CreateAuctionComponent implements OnInit {
 
-  headerCofig: any = {
+  headerConfig: any = {
     title: "Create Auction",
     subTitle: "",
     enableSubTitle: false
@@ -29,10 +31,12 @@ export class CreateAuctionComponent implements OnInit {
   isNewAuction: boolean = false;
   auction: any;
   eventId: number = 0;
+  isReadOnly = false;
 
   constructor(private dms: DataManagerService,
     private spinnerService: NgxSpinnerService,
     private eventService: EventService,
+    private toastService: ToastrService,
     private route: ActivatedRoute) {
     console.log("Hello Create Auction");
     //this.dataSource.paginator = this.paginator;
@@ -51,7 +55,8 @@ export class CreateAuctionComponent implements OnInit {
       this.supplierList.push({
         name: "Supplier Name" + i,
         partnerName: "PartnerName" + i,
-        email: "email" + i
+        email: "email" + i,
+        id: 0
       })
     }
     this.dataSource.data = this.supplierList;
@@ -68,26 +73,39 @@ export class CreateAuctionComponent implements OnInit {
         startTime: "",
         endDate: "",
         endTime: "",
-        statusCode: 1
+        statusCode: 1,
+        displayStatus: AuctionStatus[1]
       }
     } else {
-      this.eventService.getEventById(this.eventId).subscribe((result: any) => {
-        console.log(result);
-        this.auction = {
-          id: result.id,
-          name: result.name,
-          description: result.description,
-          startdate: result.startdate,
-          startTime: result.starttime,
-          endDate: result.enddate,
-          endTime: result.endtime,
-          statusCode: 1
-        }
-      })
+      this.getEventDetails();
     }
   }
 
-  createEvent() {
+  getEventDetails() {
+    this.eventService.getEventById(this.eventId).subscribe((result: any) => {
+      console.log(result);
+      var statusCode: number = Number(result.statusCode);
+      this.auction = {
+        id: result.id,
+        name: result.name,
+        description: result.description,
+        startdate: result.startdate,
+        startTime: result.starttime,
+        endDate: result.enddate,
+        endTime: result.endtime,
+        statusCode: result.statusCode,
+        displayStatus: AuctionStatus[statusCode]
+      }
+      this.headerConfig.title = this.auction.name;
+      this.headerConfig.subTitle = this.auction.displayStatus;
+      this.headerConfig.enableSubTitle = true;
+      if (this.auction.statusCode != 1) {
+        this.isReadOnly = true;
+      }
+    });
+  }
+
+  async createEvent() {
     let self = this;
     if (this.isNewAuction) {
       this.eventService.createEvent({
@@ -99,16 +117,24 @@ export class CreateAuctionComponent implements OnInit {
         "startdate": this.auction.startdate,
         "enddate": this.auction.endDate,
         "starttime": this.auction.startTime,
-        "endtime": this.auction.endTime
+        "endtime": this.auction.endTime,
+        "lots": [],
+        "suppliers": []
       }).subscribe((result: any) => {
         if (result) {
           self.dms.setDataStoreValue("eventInfo", result);
           self.eventId = result["id"];
           self.auction.name = result["name"];
+          self.auction.statusCode = result.statusCode;
+          self.auction.displayStatus = AuctionStatus[result.statusCode]
           self.isNewAuction = false;
-          self.headerCofig.title = this.auction.name;
-          self.headerCofig.subTitle = "Draft";
-          self.headerCofig.enableSubTitle = true;
+          self.headerConfig.title = this.auction.name;
+          this.headerConfig.subTitle = this.auction.displayStatus;
+          self.headerConfig.enableSubTitle = true;
+          this.dms.setDataStoreValue("eventId", this.eventId);
+          if (this.auction.statusCode != 1) {
+            this.isReadOnly = true;
+          }
         }
       });
     } else {
@@ -121,7 +147,9 @@ export class CreateAuctionComponent implements OnInit {
         "startdate": this.auction.startdate,
         "enddate": this.auction.endDate,
         "starttime": this.auction.startTime,
-        "endtime": this.auction.endTime
+        "endtime": this.auction.endTime,
+        "lots": [],
+        "suppliers": []
       }).subscribe((result: any) => {
         if (result) {
           self.dms.setDataStoreValue("eventInfo", result);
@@ -131,10 +159,16 @@ export class CreateAuctionComponent implements OnInit {
           self.auction.startTime = result["starttime"] ? result["starttime"] : "";
           self.auction.endDate = result["enddate"] ? result["enddate"] : "";
           self.auction.endTime = result["endtime"] ? result["endtime"] : "";
+          self.auction.statusCode = result.statusCode;
+          self.auction.displayStatus = AuctionStatus[result.statusCode]
           self.isNewAuction = false;
-          self.headerCofig.title = this.auction.name;
-          self.headerCofig.subTitle = "Draft";
-          self.headerCofig.enableSubTitle = true;
+          self.headerConfig.title = this.auction.name;
+          this.headerConfig.subTitle = this.auction.displayStatus;
+          self.headerConfig.enableSubTitle = true;
+          this.dms.setDataStoreValue("eventId", this.eventId);
+          if (this.auction.statusCode != 1) {
+            this.isReadOnly = true;
+          }
         }
       });
     }
@@ -166,7 +200,7 @@ export class CreateAuctionComponent implements OnInit {
     }
   }
 
-  saveAsDraft() {
+  async saveAsDraft() {
     console.log(this.auction);
     // validate for first two sections (basic info and schedule).
     if (!(this.auction.name && this.auction.name.length > 1)) {
@@ -178,12 +212,32 @@ export class CreateAuctionComponent implements OnInit {
     } else if (!(this.auction.endDate && this.auction.endDate.length > 1)) {
       // auction end data missing.
     }
-    this.createEvent()
+    await this.createEvent();
+    this.toastService.success(`Auction Saved to Draft`);
   }
 
-  submitAuction() {
+  async submitAuction() {
     // validate for whole auction ( A to Z).
-    this.createEvent();
-
+    var promise = await this.createEvent();
+    this.eventService.submitAuction(this.eventId).subscribe((result: any) => {
+      if (result) {
+        if (result.isSubmitted) {
+          this.toastService.success("Auction Submitted Successfully !!");
+          this.getEventDetails();
+        } else {
+          var str = "<ol>";
+          result.errors.forEach((msg: string) => {
+            str = str + "<li>" + msg + "</li>";
+          });
+          str = str + "</ol>";
+          this.toastService.error(str,
+            'Errors',
+            {
+              enableHtml: true,
+              closeButton: true
+            })
+        }
+      }
+    });
   }
 }

@@ -11,13 +11,15 @@ import { MatTableModule } from '@angular/material/table';
 import { SupplierComponent } from './supplier/supplier.component';
 import { LotGridComponent } from './lot-grid/lot-grid.component';
 import { LotDetailsComponent } from './lot-details/lot-details.component';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { LotItemComponent } from './lot-item/lot-item.component';
 import { EventService } from 'src/shared/services/EventService.service';
 import { FormsModule } from '@angular/forms';
 import { LotService } from 'src/shared/services/LotService.service';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SupplierRepositoryComponent } from './supplier-repository/supplier-repository.component';
+import { SupplierService } from 'src/shared/services/SupplierService.service';
 
 const routes: Routes = [
   {
@@ -33,7 +35,8 @@ const routes: Routes = [
     SupplierComponent,
     LotGridComponent,
     LotDetailsComponent,
-    LotItemComponent
+    LotItemComponent,
+    SupplierRepositoryComponent
   ],
   imports: [
     CommonModule,
@@ -50,7 +53,10 @@ const routes: Routes = [
   exports:[
     RouterModule
   ],
-  providers: [EventService, LotService],
+  providers: [EventService, LotService, SupplierService,{
+    provide: MatDialogRef,
+    useValue: {}
+  },],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class CreateAuctionModule { }

@@ -57,7 +57,17 @@ export class LotService {
 
     deleteItem(id:any) {
         let url = environment.baseUrl + `api/lots/deleteitem/${id}`;
-        return this.httpClient.get(url, {
+        return this.httpClient.get(url,{
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${this.dms.getToken()}`
+            }
+        }); 
+    }
+
+    deleteLot(ids:any[]) {
+        let url = environment.baseUrl + `api/lots/deletelot`;
+        return this.httpClient.post(url,ids,{
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${this.dms.getToken()}`

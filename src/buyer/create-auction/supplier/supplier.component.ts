@@ -6,6 +6,7 @@ import { Supplier } from 'src/shared/models/supplier';
 import { SupplierRepositoryComponent } from '../supplier-repository/supplier-repository.component';
 import { EventService } from 'src/shared/services/EventService.service';
 import { LotDetailsComponent } from '../lot-details/lot-details.component';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-supplier',
@@ -22,18 +23,11 @@ export class SupplierComponent implements OnInit{
 
   constructor(private dialog: MatDialog,
     public dialogRef: MatDialogRef<LotDetailsComponent>,
+    private spinnerService: NgxSpinnerService,
     private eventService: EventService) {
   }
 
   ngOnInit(): void {
-    for (var i = 1; i < 10; i++) {
-      this.supplierList.push({
-        name: "Supplier Name" + i,
-        partnerName: "PartnerName" + i,
-        email: "email" + i,
-        id: 0
-      })
-    }
     this.getAddedSuppliers();
     this.dataSource.data = this.supplierList;
   }
@@ -69,8 +63,10 @@ export class SupplierComponent implements OnInit{
   }
 
   getAddedSuppliers() {
+    this.spinnerService.show();
     this.eventService.getAddedSuppliers(this.eventId).subscribe(result=>{
       this.processData(result);
+      this.spinnerService.hide();
     })
   }
 

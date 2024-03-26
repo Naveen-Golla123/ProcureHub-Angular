@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { Auction } from 'src/shared/models/Auction.model';
+import { AuctionStatus } from 'src/shared/models/AuctionStatus.enum';
 import { DataManagerService } from 'src/shared/services/DataManager.service';
 import { EventService } from 'src/shared/services/EventService.service';
 
@@ -14,7 +16,7 @@ export class BitListComponent implements OnInit {
 
   dataSource = new MatTableDataSource<Auction>();
   auctions: Auction[] = [];
-  displayedColumns: string[] = ['name', 'status', "action"];
+  displayedColumns: string[] = ['name', 'displayStatusCode', "action"];
 
   headerCofig: any = {
     title: "Auctions",
@@ -24,18 +26,22 @@ export class BitListComponent implements OnInit {
 
   constructor(private eventService: EventService,private router: Router,
     private route: ActivatedRoute,
-    private dataService: DataManagerService) {
+    private dataService: DataManagerService,
+    private spinnerService: NgxSpinnerService) {
 
   }
 
   ngOnInit(): void {
+    this.spinnerService.show();
     this.eventService.getAllEvents().subscribe((events: any) => {
+      
       if (events && events.length > 0) {
         events.forEach((event: any) => {
           var event_: Auction = {
             name: event.name,
             description : event.description,
             statusCode : event.statusCode,
+            displayStatusCode: AuctionStatus[event.statusCode],
             startdate: ",",
             startTime: ",",
             endTime: "",
@@ -46,6 +52,7 @@ export class BitListComponent implements OnInit {
         })
       }
       this.dataSource.data = this.auctions;
+      this.spinnerService.hide();
     })
     
   }

@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { Item, Lot } from 'src/shared/models/Lot';
 import { LotService } from 'src/shared/services/LotService.service';
@@ -18,6 +19,7 @@ export class LotDetailsComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<LotDetailsComponent>,
     private toastService: ToastrService,
+    private spinnerService: NgxSpinnerService,
     private lotService: LotService) {
     this.lot = { id: 0, name: '', description: '', totalPrice: 0, items: [] }
   }
@@ -87,13 +89,17 @@ export class LotDetailsComponent implements OnInit {
     var index = this.lot.items.findIndex((i: any) => { return i.UiId == item.UiId });
     this.lot.items.splice(index, 1);
     if (item._id != 0) {
+      this.spinnerService.show();
       await this.lotService.deleteItem(item._id).toPromise();
+      this.spinnerService.hide();
     }
     this.toastService.success(`${item.name} item deleted successfully`);
   }
 
   saveLot() {
+    this.spinnerService.show()
     this.lotService.saveLot(this.lot).subscribe(result => {
+      this.spinnerService.hide();
       console.log(result);
       this.toastService.success(`Lot Saved Successfully`);
       this.dialogRef.close();

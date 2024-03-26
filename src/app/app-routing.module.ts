@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGaurd } from '../shared/services/AuthGaurd';
 import { AppComponent } from './app.component';
+import { BuyerGaurd } from 'src/shared/services/BuyerGaurd';
+import { SupplierGaurd } from 'src/shared/services/SupplierGaurd';
 
 const routes: Routes = [
   {
@@ -12,17 +14,22 @@ const routes: Routes = [
   },
   {
     path: "buyerHome",
-    canActivate: [AuthGaurd],
+    canActivate: [AuthGaurd, BuyerGaurd],
     loadChildren: ()=> import('../buyer/buyer.module').then(m=>m.BuyerModule)
   },
   {
     path: "supplierHome",
-    canActivate: [AuthGaurd],
+    canActivate: [AuthGaurd, SupplierGaurd],
     loadChildren: ()=> import('../supplier/supplier.module').then(m=>m.SupplierModule)
   },
   {
     path: 'auth',
     loadChildren: ()=> import('../shared/login/login.module').then(m=> m.LoginModule)
+  },
+  {
+    path: "auction",
+    canActivate: [AuthGaurd],
+    loadChildren: ()=>import('../shared/auction/auction.module').then(m=>m.AuctionModule)
   }
 ];
 

@@ -16,7 +16,7 @@ export class DashboardComponent {
       route: "../createauction",
       callback: ()=>{this.onCreateAuctionCicked()},
       params: {
-        eventId: 12
+        eventId: 0
       }
     },
     {

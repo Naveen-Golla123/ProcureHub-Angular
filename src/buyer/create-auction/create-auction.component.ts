@@ -9,7 +9,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Auction } from 'src/shared/models/Auction.model';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
-import { AuctionStatus } from 'src/shared/models/AuctionStatus.enum';
+import { AuctionStatus } from '../../shared/models/AuctionStatus.enum';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-create-auction',
@@ -60,7 +61,6 @@ export class CreateAuctionComponent implements OnInit {
       })
     }
     this.dataSource.data = this.supplierList;
-    this.spinnerService.show();
   }
 
   initalizeAuction() {
@@ -82,6 +82,7 @@ export class CreateAuctionComponent implements OnInit {
   }
 
   getEventDetails() {
+    this.spinnerService.show();
     this.eventService.getEventById(this.eventId).subscribe((result: any) => {
       console.log(result);
       var statusCode: number = Number(result.statusCode);
@@ -102,13 +103,15 @@ export class CreateAuctionComponent implements OnInit {
       if (this.auction.statusCode != 1) {
         this.isReadOnly = true;
       }
+      this.spinnerService.hide();
     });
   }
 
   async createEvent() {
     let self = this;
+    this.spinnerService.show();
     if (this.isNewAuction) {
-      this.eventService.createEvent({
+      var result: any = await this.eventService.createEvent({
         "id": 0,
         "name": this.auction.name,
         "type": "1",
@@ -120,25 +123,27 @@ export class CreateAuctionComponent implements OnInit {
         "endtime": this.auction.endTime,
         "lots": [],
         "suppliers": []
-      }).subscribe((result: any) => {
-        if (result) {
-          self.dms.setDataStoreValue("eventInfo", result);
-          self.eventId = result["id"];
-          self.auction.name = result["name"];
-          self.auction.statusCode = result.statusCode;
-          self.auction.displayStatus = AuctionStatus[result.statusCode]
-          self.isNewAuction = false;
-          self.headerConfig.title = this.auction.name;
-          this.headerConfig.subTitle = this.auction.displayStatus;
-          self.headerConfig.enableSubTitle = true;
-          this.dms.setDataStoreValue("eventId", this.eventId);
-          if (this.auction.statusCode != 1) {
-            this.isReadOnly = true;
-          }
+      }).toPromise();
+
+      // var result = lastValueFrom(resultPipe);
+
+      if (result) {
+        self.dms.setDataStoreValue("eventInfo", result);
+        self.eventId = result["id"];
+        self.auction.name = result["name"];
+        self.auction.statusCode = result.statusCode;
+        self.auction.displayStatus = AuctionStatus[result.statusCode]
+        self.isNewAuction = false;
+        self.headerConfig.title = this.auction.name;
+        this.headerConfig.subTitle = this.auction.displayStatus;
+        self.headerConfig.enableSubTitle = true;
+        this.dms.setDataStoreValue("eventId", this.eventId);
+        if (this.auction.statusCode != 1) {
         }
-      });
+      }
+      this.spinnerService.hide();
     } else {
-      this.eventService.updateEvent({
+      var result: any = await this.eventService.updateEvent({
         "id": this.eventId,
         "name": this.auction.name,
         "type": "1",
@@ -150,27 +155,28 @@ export class CreateAuctionComponent implements OnInit {
         "endtime": this.auction.endTime,
         "lots": [],
         "suppliers": []
-      }).subscribe((result: any) => {
-        if (result) {
-          self.dms.setDataStoreValue("eventInfo", result);
-          self.eventId = result["id"];
-          self.auction.name = result["name"];
-          self.auction.startdate = result["startdate"] ? result["startdate"] : "";
-          self.auction.startTime = result["starttime"] ? result["starttime"] : "";
-          self.auction.endDate = result["enddate"] ? result["enddate"] : "";
-          self.auction.endTime = result["endtime"] ? result["endtime"] : "";
-          self.auction.statusCode = result.statusCode;
-          self.auction.displayStatus = AuctionStatus[result.statusCode]
-          self.isNewAuction = false;
-          self.headerConfig.title = this.auction.name;
-          this.headerConfig.subTitle = this.auction.displayStatus;
-          self.headerConfig.enableSubTitle = true;
-          this.dms.setDataStoreValue("eventId", this.eventId);
-          if (this.auction.statusCode != 1) {
-            this.isReadOnly = true;
-          }
+      }).toPromise();
+
+      if (result) {
+        self.dms.setDataStoreValue("eventInfo", result);
+        self.eventId = result["id"];
+        self.auction.name = result["name"];
+        self.auction.startdate = result["startdate"] ? result["startdate"] : "";
+        self.auction.startTime = result["starttime"] ? result["starttime"] : "";
+        self.auction.endDate = result["enddate"] ? result["enddate"] : "";
+        self.auction.endTime = result["endtime"] ? result["endtime"] : "";
+        self.auction.statusCode = result.statusCode;
+        self.auction.displayStatus = AuctionStatus[result.statusCode]
+        self.isNewAuction = false;
+        self.headerConfig.title = this.auction.name;
+        this.headerConfig.subTitle = this.auction.displayStatus;
+        self.headerConfig.enableSubTitle = true;
+        this.dms.setDataStoreValue("eventId", this.eventId);
+        if (this.auction.statusCode != 1) {
+          this.isReadOnly = true;
         }
-      });
+        this.spinnerService.hide();
+      }
     }
   }
 
@@ -212,13 +218,17 @@ export class CreateAuctionComponent implements OnInit {
     } else if (!(this.auction.endDate && this.auction.endDate.length > 1)) {
       // auction end data missing.
     }
+    this.spinnerService.show();
     await this.createEvent();
+    this.spinnerService.hide();
     this.toastService.success(`Auction Saved to Draft`);
   }
 
   async submitAuction() {
     // validate for whole auction ( A to Z).
+
     var promise = await this.createEvent();
+    this.spinnerService.show();
     this.eventService.submitAuction(this.eventId).subscribe((result: any) => {
       if (result) {
         if (result.isSubmitted) {
@@ -238,6 +248,7 @@ export class CreateAuctionComponent implements OnInit {
             })
         }
       }
+      this.spinnerService.hide();
     });
   }
 }

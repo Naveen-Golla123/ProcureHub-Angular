@@ -35,5 +35,6 @@ export class BuyerHomeComponent implements OnInit {
   logOut() {
     console.log("Logout clicked !!");
     this.dataService.clearToken();
+    this.router.navigate(['/auth'], { relativeTo: this.route.parent});
   }
 }

@@ -1,0 +1,65 @@
+<app-page-header [config]="headerCofig"></app-page-header>
+<div class="p-5">
+    <div class="flex w-full items-center justify-center">
+        <div class="flex flex-wrap justify-around" id="idSection">
+            <div (click)="onFilterClicked('All')"
+                class="px-[4vh] py-[2vh] bg-primary rounded-xl text-white font-sans font-semibold mr-10 cursor-pointer">
+                All
+            </div>
+
+            <div class="px-[4vh] py-[2vh] bg-white rounded-xl text-black font-sans font-semibold mr-10 cursor-pointer" (click)="onFilterClicked('isAccepted')">
+                Accepted
+            </div>
+
+            <div class="px-[4vh] py-[2vh] bg-white rounded-xl text-black font-sans font-semibold mr-10 cursor-pointer" (click)="onFilterClicked('isRejected')">
+                Rejected
+            </div>
+        </div>
+    </div>
+
+    <div class="p-10" id="gridSection">
+        <div>
+            <table mat-table [dataSource]="dataSource">
+
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef> Name </th>
+                    <td mat-cell *matCellDef="let element"> <span class="text-black cursor-pointer hover:underline hover:font-medium">{{element.name}}</span></td>
+                </ng-container>
+
+                <ng-container matColumnDef="displayStatusCode">
+                    <th mat-header-cell *matHeaderCellDef> Status </th>
+                    <td mat-cell *matCellDef="let element"> {{element.displayStatusCode}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef> </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div class="flex justify-center items-center" *ngIf="element.isInvited && !element.isAccepted && !element.isRejected && element.statusCode != 2">
+                            <button class="bg-green-600 text-white font-medium p-2 mr-2 pr-[20px] rounded-md flex justify-center items-center" (click)="accepted(element)">
+                                <mat-icon class="cursor-pointer text-base" aria-hidden="false"
+                                aria-label="edit" fontIcon="done"></mat-icon>
+                                <span class="ml-1"> Accept </span>
+                            </button>
+                            <button class="bg-red-600 text-white font-medium p-2 mr-2 pr-[20px] rounded-md flex justify-center items-center" (click)="rejected(element)">
+                                <mat-icon class="cursor-pointer text-base" aria-hidden="false"
+                                aria-label="edit" fontIcon="close"></mat-icon>
+                                <span class="ml-1"> Reject </span>
+                            </button>
+                        </div>
+                        <div class="flex justify-center items-center" *ngIf="element.isAccepted && element.statusCode == 3">
+                            <button class="bg-white text-green-500 font-medium p-2 pr-[20px] mr-2 rounded-md flex justify-center items-center border-green-500 border-[3px]" (click)="openAuction(element)">
+                                <div class="dot dot--basic" aria-hidden="false"></div> 
+                                <span class="ml-1"> Live </span>
+                            </button>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+                </tr>
+            </table>
+            <!-- <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator> -->
+        </div>
+    </div>
+</div>

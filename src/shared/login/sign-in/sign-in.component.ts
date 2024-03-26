@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/shared/services/AuthService.service';
 import { DataManagerService } from 'src/shared/services/DataManager.service';
@@ -9,18 +10,21 @@ import { DataManagerService } from 'src/shared/services/DataManager.service';
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.scss']
 })
-export class SignInComponent {
+export class SignInComponent implements OnInit {
 
   email: string;
   password: string;
 
-  constructor(private router: Router, 
-    private route: ActivatedRoute, 
+  constructor(private router: Router,
+    private route: ActivatedRoute,
     private authService: AuthService,
     private toastr: ToastrService,
-    private dataManagerService: DataManagerService) {
+    private dataManagerService: DataManagerService,
+    private spinner: NgxSpinnerService) {
     this.email = "";
     this.password = "";
+  }
+  ngOnInit(): void {
   }
 
   signUpClicked() {
@@ -31,12 +35,20 @@ export class SignInComponent {
     // pass the username and password
     this.validateDetails();
     console.log(this.email, this.password);
+    this.spinner.show();
     this.authService.signIn(this.email, this.password).subscribe(result => {
+      this.spinner.hide();
       if (result && result.status) {
         this.dataManagerService.setToken(result.token);
-        this.router.navigate(['/buyerHome'], { relativeTo: this.route.parent })
+        this.toastr.success('LoggedIn', this.email + ' loggedIn successfully !!');
+        var userInfo = this.dataManagerService.getUserInfo();
+        if(userInfo && userInfo.isSupplier == 'True') {
+          this.router.navigate(['/supplierHome'], { relativeTo: this.route.parent })
+        } else {
+          this.router.navigate(['/buyerHome'], { relativeTo: this.route.parent })
+        }
       } else {
-        this.toastr.success('Hello world!', 'Toastr fun!');
+        this.toastr.error('Error', 'Invalid email and password');
       }
     });
   }

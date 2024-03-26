@@ -5,6 +5,7 @@ export class User {
     public mobile: string;
     public email: string;
     public confirmPassword: string;
+    public isSupplier: boolean;
 
     constructor() {
         this.email = '';
@@ -13,5 +14,6 @@ export class User {
         this.mobile = "";
         this.password = "";
         this.confirmPassword = "";
+        this.isSupplier = false;
     }
 }

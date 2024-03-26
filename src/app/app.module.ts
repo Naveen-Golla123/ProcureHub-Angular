@@ -18,6 +18,7 @@ import { ToastrModule } from 'ngx-toastr';
     HttpClientModule,
     NgxSpinnerModule,
     BrowserAnimationsModule,
+    NgxSpinnerModule,
     ToastrModule.forRoot()
   ],
   exports: [NgxSpinnerModule],

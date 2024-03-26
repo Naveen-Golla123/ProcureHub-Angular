@@ -1,0 +1,21 @@
+:root {
+    --dot-size: 1rem;
+    --animation-duration: 2s;
+}
+
+.dot {
+    width: 0.7rem;
+    height: 0.7rem;
+    background-color: rgb(34 197 94);
+    border-radius: 50%;
+    margin: 2px;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
+  }
+  
+  .dot--basic {
+    animation: blink 2s infinite;
+  }

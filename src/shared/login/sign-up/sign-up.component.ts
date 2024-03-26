@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from 'src/shared/models/User.model';
 import { AuthService } from '../../services/AuthService.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-sign-up',
@@ -15,7 +17,11 @@ export class SignUpComponent {
   isPasswordMatched: boolean = true;
   isEligibleToRegister = false;
 
-  constructor(private router: Router, private route: ActivatedRoute, private authService: AuthService) {
+  constructor(private router: Router, 
+    private route: ActivatedRoute, 
+    private authService: AuthService,
+    private spinnerService: NgxSpinnerService,
+    private toastr: ToastrService) {
     this.user = new User();
   }
 
@@ -28,9 +34,11 @@ export class SignUpComponent {
     if(!this.confirmPassword() || !this.isEmailAvailable){
       return;
     }
-
+    this.spinnerService.show();
     this.authService.signUp(this.user).subscribe(result=>{
-      console.log(result);
+      this.spinnerService.hide();
+      this.toastr.success("Registered Successfully!!")
+      this.signInClicked();
     })
     
   }

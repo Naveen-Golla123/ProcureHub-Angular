@@ -8,6 +8,7 @@ import { LotService } from 'src/shared/services/LotService.service';
 import { DataManagerService } from 'src/shared/services/DataManager.service';
 import { ToastrService } from 'ngx-toastr';
 import { SupplierRepositoryComponent } from '../supplier-repository/supplier-repository.component';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-lot-grid',
@@ -24,6 +25,7 @@ export class LotGridComponent {
 
   constructor(private dialog: MatDialog,
     private toastService: ToastrService,
+    private spinnerService: NgxSpinnerService,
     private lotService: LotService, private dms: DataManagerService) {
     // this.eventId = this.dms.getDataStoreValue("eventId");
   }
@@ -88,9 +90,11 @@ export class LotGridComponent {
      await this.selection.selected.forEach((lot:any)=>{
         selectedLots.push(lot.id);
      })
+     this.spinnerService.show();
      this.lotService.deleteLot(selectedLots).subscribe((result:any)=>{
         this.toastService.success("Lots deleted successfully!!");
         this.getAllLots();
+        this.spinnerService.hide();
      });
   }
 
@@ -120,9 +124,11 @@ export class LotGridComponent {
   getAllLots() {
     let self = this;
     // this.lots
+    this.spinnerService.show();
     this.lotService.getAllLots(this.eventId).subscribe(result => {
       console.log(result);
       self.processLotData(result);
+      this.spinnerService.hide();
     });
   }
 

@@ -7,6 +7,7 @@ import { SupplierService } from 'src/shared/services/SupplierService.service';
 import { LotDetailsComponent } from '../lot-details/lot-details.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { EventService } from 'src/shared/services/EventService.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-supplier-repository',
@@ -25,6 +26,7 @@ export class SupplierRepositoryComponent implements OnInit{
     private supplierService: SupplierService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<SupplierRepositoryComponent>,
+    private spinnerService: NgxSpinnerService,
     private toastService: ToastrService) {
 
   }
@@ -35,7 +37,10 @@ export class SupplierRepositoryComponent implements OnInit{
   } 
 
   getSupplierData() {
+    this.spinnerService.show();
+    this.spinnerService.show();
     this.supplierService.getAllSuppliers().subscribe((result:any)=>{
+      this.spinnerService.hide();
       if(result && result.length > 0) {
         result.forEach((supplier:any)=>{
           let supplier_:Supplier = {
@@ -48,6 +53,7 @@ export class SupplierRepositoryComponent implements OnInit{
         });
         this.dataSource.data = this.suppliers;
       }
+      this.spinnerService.hide();
     })
   }
 
@@ -75,7 +81,9 @@ export class SupplierRepositoryComponent implements OnInit{
       selectedIds.push(supplier.id);
     });
     console.log(selectedIds);
+    this.spinnerService.show();
     this.eventService.addSuppliers(selectedIds, this.eventId).subscribe((result:any)=>{
+      this.spinnerService.hide();
       if(result && result.length) {
         this.toastService.success("Suppliers added successfully !!")
       }

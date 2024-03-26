@@ -1,0 +1,19 @@
+<div class="w-screen h-screen flex">
+    <div class="min-h-full w-[15%] bg-white overflow-y-scroll">
+        <div *ngFor="let element of lots">
+            <app-supplier-lot-card></app-supplier-lot-card>
+        </div>
+    </div>
+    <div class="min-h-full w-[90%]">
+        <!-- Bid Header -->
+        <app-bid-header></app-bid-header>
+
+        <!-- Bid Grid  -->
+        <div>
+            <ag-grid-angular class="ag-theme-quartz" style="height: 500px;" [rowData]="rowData" [columnDefs]="colDefs">
+            </ag-grid-angular>
+        </div>
+
+        <!-- Bid Footer -->
+    </div>
+</div>

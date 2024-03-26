@@ -6,7 +6,7 @@ import { SupplierLotCardComponent } from './supplier-lot-card/supplier-lot-card.
 import { BidHeaderComponent } from './bid-header/bid-header.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
-import { AgGridModule } from 'ag-grid-angular';
+// import { AgGridModule } from 'ag-grid-angular';
 
 const routes: Route [] = [
   {
@@ -14,7 +14,6 @@ const routes: Route [] = [
     component: SupplierLiveComponent
   }
 ]
-
 
 @NgModule({
   declarations: [
@@ -26,7 +25,7 @@ const routes: Route [] = [
     CommonModule,
     FormsModule,
     RouterModule.forChild(routes),
-    AgGridModule,
+    // AgGridModule,
   ], 
   exports: [RouterModule]
 })

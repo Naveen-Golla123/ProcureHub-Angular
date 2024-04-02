@@ -1,18 +1,36 @@
 <div class="w-screen h-screen flex">
     <div class="min-h-full w-[15%] bg-white overflow-y-scroll">
-        <div *ngFor="let element of lots">
-            <app-supplier-lot-card></app-supplier-lot-card>
+        <div *ngFor="let element of lots | keyvalue" class="" [ngClass]="{'border-b-4 border-primary' : activeLot._id == getLotId(element) }" (click)="switchLot(element)">
+            <app-supplier-lot-card [config]="element.value"></app-supplier-lot-card>
         </div>
     </div>
-    <div class="min-h-full w-[90%]">
+    <div class="min-h-full w-[85%] relative">
         <!-- Bid Header -->
-        <app-bid-header></app-bid-header>
-
+        <app-bid-header class="sticky" [config]="auctionHeaderInfo"></app-bid-header>
         <!-- Bid Grid  -->
-        <div>
-            <ag-grid-angular class="ag-theme-quartz" style="height: 500px;" [rowData]="rowData" [columnDefs]="colDefs">
+        <div class="p-3">
+            <ag-grid-angular (gridReady)="onGridReady($event)" (cellValueChanged)="onBasePriceChanged($event)"  class="ag-theme-quartz" style="width: 100%; height: 500px" [rowData]="rowData" [columnDefs]="colDefs">
             </ag-grid-angular>
         </div>
         <!-- Bid Footer -->
+        <div class="absolute bottom-0 w-[100%]">
+            <div class="flex flex-col fixed bottom-0 w-[85%]">
+                <div class="flex">
+                    <div class="flex flex-col p-2 border-[1px] border-slate-200 flex-grow">
+                        <span class="text-xs">Total Amount for {{activeLot.name}} Lot</span>
+                        <span class="text-lg">{{activeLot.totalPrice}}</span>
+                    </div>
+                    <div class="flex flex-col p-2 border-[1px] border-slate-200 flex-grow">
+                        <span class="text-xs">Total Auction Bid</span>
+                        <span class="text-lg">{{totalPrice}}</span>
+                    </div>
+                </div>
+                
+                <div class="flex justify-end bg-white rounded-sm p-5">
+                    <button class="bg-white text-primary p-2 rounded-lg w-[200px] shadow-md hover:shadow-2xl mr-5">{{'Back to Auctions'}}</button> 
+                    <button class="bg-primary text-white p-2 rounded-lg w-[200px] shadow-md hover:shadow-2xl mr-5" (click)="placeBid()">{{'Place Bid'}}</button>
+                </div>
+            </div>
+        </div> 
     </div>
 </div>

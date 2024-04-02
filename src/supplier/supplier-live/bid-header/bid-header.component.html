@@ -1,20 +1,27 @@
 <div class="flex flex-col bg-white">
-    <div class="flex flex-col p-2 border-[1px] border-slate-200">
-        <span class="text-xs">Auction Name</span>
-        <span class="text-lg">Walmart Logistics</span>
+    <div class="flex justify-between">
+        <div class="flex flex-col p-2 border-[1px] border-slate-200 flex-grow">
+            <span class="text-xs">Auction Name</span>
+            <span class="text-lg">{{config.auctionName}}</span>
+        </div>
+        <div class="flex flex-col p-2 border-[1px] border-slate-200 flex-grow">
+            <span class="text-xs">Remaining Time</span>
+            <span class="text-lg {{timerColorRed ? 'text-red-600' : ''}}">{{timerDisplay}}</span>
+        </div>
     </div>
+   
     <div class="flex justify-between">
         <div class="flex flex-col p-2 border-[1px] border-slate-200 flex-grow">
             <span class="text-xs">Rank</span>
-            <span class="text-lg">1</span>
+            <span class="text-lg {{config.rank == 1 || config.rank == '1' ? 'text-green-500 font-medium' : ''}}">{{config.rank}}</span>
         </div>
         <div class="flex flex-col p-2 border-[1px] border-slate-200 flex-grow">
             <span class="text-xs">Total Suppliers</span>
-            <span class="text-lg">10</span>
+            <span class="text-lg">{{config.numberOfSupplier}}</span>
         </div>
         <div class="flex flex-col p-2 border-[1px] border-slate-200 flex-grow">
             <span class="text-xs">Best Bid</span>
-            <span class="text-lg">300 USD</span>
+            <span class="text-lg">{{config.bestBid}} USD</span>
         </div>
     </div>
 </div>

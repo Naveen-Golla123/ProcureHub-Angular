@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { AuctionComponent } from './auction.component';
 import { AuctionHeaderComponent } from './auction-header/auction-header.component';
 import { Route, RouterModule } from '@angular/router';
+import { SupplierGaurd } from '../services/SupplierGaurd';
 
 
 const routes: Route[] = [{
@@ -11,8 +12,9 @@ const routes: Route[] = [{
   children : [
     {
       path: 'supplierAuction',
+      canActivate: [SupplierGaurd],
       loadChildren: ()=> import('../../supplier/supplier-live/supplier-live.module').then(x=>x.SupplierLiveModule),
-      outlet: "liveAuction"
+      outlet: "liveAuction",
     },
     {
       path: 'buyerAuction',

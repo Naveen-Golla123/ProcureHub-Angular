@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { SupplierHomeComponent } from './supplier-home/supplier-home.component';
 import { RouterModule, Routes } from '@angular/router';
 import { SupplierService } from 'src/shared/services/SupplierService.service';
+import { LiveAuctionService } from 'src/shared/services/LiveAuction.service';
 
 const routes: Routes = [
   {
@@ -39,6 +40,6 @@ const routes: Routes = [
   exports: [
     RouterModule
   ],
-  providers: [SupplierService]
+  providers: [SupplierService, LiveAuctionService]
 })
 export class SupplierModule { }

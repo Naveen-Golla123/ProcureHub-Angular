@@ -14,6 +14,7 @@ export class EventService {
 
     createEvent(event: any) {
         let url = environment.baseUrl + "api/event/createevent";
+        
         return this.httpClient.post(url, event, {
             headers: {
                 'Content-Type': 'application/json',

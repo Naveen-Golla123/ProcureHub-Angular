@@ -92,7 +92,7 @@ export class SupplierAuctionComponent {
   }  
 
   openAuction(auction: any){
-    var targetUrl = window.location.origin + '/auction'
+    var targetUrl = window.location.origin + `/auction${auction.id}`
     window.open(targetUrl, "_blank");
   }   
 }

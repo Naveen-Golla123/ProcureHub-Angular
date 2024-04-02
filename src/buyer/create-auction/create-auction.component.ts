@@ -111,16 +111,16 @@ export class CreateAuctionComponent implements OnInit {
     let self = this;
     this.spinnerService.show();
     if (this.isNewAuction) {
-      var result: any = await this.eventService.createEvent({
+      var result: any = await self.eventService.createEvent({
         "id": 0,
-        "name": this.auction.name,
+        "name": self.auction.name,
         "type": "1",
         "businessType": 2,
-        "description": this.auction.description,
-        "startdate": this.auction.startdate,
-        "enddate": this.auction.endDate,
-        "starttime": this.auction.startTime,
-        "endtime": this.auction.endTime,
+        "description": self.auction.description,
+        "startdate": self.auction.startdate,
+        "enddate": self.auction.endDate,
+        "starttime": self.auction.startTime,
+        "endtime": self.auction.endTime,
         "lots": [],
         "suppliers": []
       }).toPromise();
@@ -134,25 +134,25 @@ export class CreateAuctionComponent implements OnInit {
         self.auction.statusCode = result.statusCode;
         self.auction.displayStatus = AuctionStatus[result.statusCode]
         self.isNewAuction = false;
-        self.headerConfig.title = this.auction.name;
-        this.headerConfig.subTitle = this.auction.displayStatus;
+        self.headerConfig.title = self.auction.name;
+        self.headerConfig.subTitle = self.auction.displayStatus;
         self.headerConfig.enableSubTitle = true;
-        this.dms.setDataStoreValue("eventId", this.eventId);
-        if (this.auction.statusCode != 1) {
+        self.dms.setDataStoreValue("eventId", self.eventId);
+        if (self.auction.statusCode != 1) {
         }
       }
       this.spinnerService.hide();
     } else {
-      var result: any = await this.eventService.updateEvent({
-        "id": this.eventId,
-        "name": this.auction.name,
+      var result: any = await self.eventService.updateEvent({
+        "id": self.eventId,
+        "name": self.auction.name,
         "type": "1",
         "businessType": 2,
-        "description": this.auction.description,
-        "startdate": this.auction.startdate,
-        "enddate": this.auction.endDate,
-        "starttime": this.auction.startTime,
-        "endtime": this.auction.endTime,
+        "description": self.auction.description,
+        "startdate": self.auction.startdate,
+        "enddate": self.auction.endDate,
+        "starttime": self.auction.startTime,
+        "endtime": self.auction.endTime,
         "lots": [],
         "suppliers": []
       }).toPromise();

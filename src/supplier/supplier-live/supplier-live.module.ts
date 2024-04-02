@@ -7,12 +7,21 @@ import { BidHeaderComponent } from './bid-header/bid-header.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { AgGridModule } from 'ag-grid-angular';
+import { AuctionHub } from 'src/shared/services/AuctionHub.service';
 
 const routes: Route [] = [
   {
     path: '',
-    component: SupplierLiveComponent
-  }
+    component: SupplierLiveComponent,
+  },
+  // {
+  //   path: "live",
+  //   component: SupplierLiveComponent
+  // },
+  // {
+  //   path: "live/:id",
+  //   component: SupplierLiveComponent
+  // }
 ]
 
 @NgModule({
@@ -27,6 +36,7 @@ const routes: Route [] = [
     RouterModule.forChild(routes),
     AgGridModule,
   ], 
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [AuctionHub]
 })
 export class SupplierLiveModule { }

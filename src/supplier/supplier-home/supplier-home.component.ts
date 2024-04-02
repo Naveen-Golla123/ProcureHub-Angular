@@ -27,10 +27,6 @@ export class SupplierHomeComponent {
     this.router.navigate([{ outlets: { supplierHome: ['settings'] } }], { relativeTo: this.route.parent, skipLocationChange: true });
   }
 
-  createAuctionClicked() {
-    this.dataService.setDataStoreValue("eventCode", 0);
-    this.router.navigate([{ outlets: { supplierHome: ['createauction'] } }], { relativeTo: this.route.parent, skipLocationChange: true });
-  }
 
   logOut() {
     console.log("Logout clicked !!");

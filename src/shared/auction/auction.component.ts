@@ -21,7 +21,7 @@ export class AuctionComponent implements OnInit {
     if (userInfo && userInfo.isSupplier == "True") {
       this.router.navigate([{ outlets: { liveAuction: ['supplierAuction'] } }], { relativeTo: this.route.parent, skipLocationChange: true });
     } else {
-      this.router.navigate([{ outlets: { liveAuction: ['supplierAuction'] } }], { relativeTo: this.route.parent, skipLocationChange: true });
+      this.router.navigate([{ outlets: { liveAuction: ['buyerAuction'] } }], { relativeTo: this.route.parent, skipLocationChange: true });
     }
   }
 }

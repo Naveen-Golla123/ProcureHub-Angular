@@ -27,7 +27,7 @@ const routes: Routes = [
     loadChildren: ()=> import('../shared/login/login.module').then(m=> m.LoginModule)
   },
   {
-    path: "auction",
+    path: "auction/:eventId",
     canActivate: [AuthGaurd],
     loadChildren: ()=>import('../shared/auction/auction.module').then(m=>m.AuctionModule)
   }

@@ -21,8 +21,8 @@ export class SupplierLiveComponent implements OnInit {
   _hubConnection: signalR.HubConnection | undefined;
   activeLot: any;
   totalPrice = 0;
-  auctionRank= 0;
-  rowData:any = [];
+  auctionRank = 0;
+  rowData: any = [];
   apiResult: any = {};
   colDefs: ColDef[] = [
     { field: "name", editable: false, flex: 1 },
@@ -30,7 +30,7 @@ export class SupplierLiveComponent implements OnInit {
     { field: "basePrice", editable: true, flex: 1 },
     { field: "quantity", editable: false, flex: 1 }
   ];
-  eventId: number = 128;
+  eventId: number = 0;
   auctionHeaderInfo: any = {
 
   };
@@ -41,40 +41,44 @@ export class SupplierLiveComponent implements OnInit {
     private spinnerService: NgxSpinnerService,
     private toastrservice: ToastrService,
     private auctionHub: AuctionHub,
-    private dataManager:DataManagerService) {
+    private dataManager: DataManagerService) {
   }
 
   ngOnInit(): void {
     this.userInfo = this.dataManager.getUserInfo();
     this.initiateDashboard();
     this.auctionHub.startHub();
-    
+  }
+
+  initiateDashboard() {
+    let eventIdString = localStorage.getItem("eventId");
+    if(eventIdString){
+      this.eventId = Number(JSON.parse(eventIdString));
+    }
+    this.spinnerService.show();
+    this.liveAuctionService.getSupplierDashBoardDate(this.eventId).subscribe((result: any) => {
+      this.updateDashboard(result);
+      this.setSignalR();
+      this.spinnerService.hide();
+    });
+  }
+
+  setSignalR() {
     this._hubConnection = this.auctionHub._hubConnection;
     this._hubConnection?.on('Send', (data: any) => {
       const received = `Received: ${data}`;
     });
 
-    this._hubConnection?.on('BidPlaced', (data:any)=>{
+    this._hubConnection?.on('BidPlaced', (data: any) => {
       console.log(data);
       this.toastrservice.show("Bid placed");
       this.updateDashboard(data);
     });
   }
 
-  initiateDashboard() {
-    this.spinnerService.show();
-    this.liveAuctionService.getSupplierDashBoardDate(this.eventId).subscribe((result: any) => {
-      this.updateDashboard(result);
-      this.spinnerService.hide();
-    });
-  }
-
-
-  updateDashboard(data:any) {
-
-    if (data) { 
+  updateDashboard(data: any) {
+    if (data) {
       if (data.suppliers) {
-
         var supplierLot = data.suppliers[this.userInfo['userId']];
         this.totalPrice = 0;
         _.each(supplierLot.supplierLots, (value: any, key: string) => {
@@ -82,15 +86,15 @@ export class SupplierLiveComponent implements OnInit {
           this.lots[key] = value;
           this.totalPrice += value.totalPrice;
         });
-        var lotValues: any = Object.values(this.lots); 
+        var lotValues: any = Object.values(this.lots);
         this.activeLot = lotValues[0];
       }
 
-      if(data.ranks){
+      if (data.ranks) {
         this.auctionHeaderInfo["rank"] = data.ranks[this.userInfo["userId"]]?.rank;
 
-        _.each(data.ranks, (value:any,key:any)=>{
-          if(value.rank == 1) {
+        _.each(data.ranks, (value: any, key: any) => {
+          if (value.rank == 1) {
             this.auctionHeaderInfo["bestBid"] = value.totalBid;
           }
         });
@@ -103,7 +107,7 @@ export class SupplierLiveComponent implements OnInit {
       this.apiResult = data;
       this.processItemsGrid();
     }
-    
+
   }
 
   processItemsGrid() {
@@ -127,7 +131,7 @@ export class SupplierLiveComponent implements OnInit {
   }
 
   lotSwicth(lotId: number) {
-
+    
   }
 
   onGridReady = (event: any) => {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-chat-card',
@@ -6,5 +6,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./chat-card.component.scss']
 })
 export class ChatCardComponent {
+  @Input('config') config:any;
 
+  constructor() {
+    
+  }
 }

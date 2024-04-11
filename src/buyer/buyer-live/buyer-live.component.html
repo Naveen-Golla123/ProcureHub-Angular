@@ -1,3 +1,89 @@
-<div class="w-full bg-red-500 h-full">
+<div class="min-w-full bg-white h-full">
+    <div class="flex flex-col w-full h-full">
+        <div>
+            <div class="flex flex-col bg-white">
+                <div class="flex justify-between">
+                    <div class="flex flex-col p-2 border-[1px] border-slate-200 flex-grow">
+                        <span class="text-xs">Auction Name</span>
+                        <span class="text-lg">{{auctionHeaderInfo.auctionName}}</span>
+                    </div>
+                    <div class="flex flex-col p-2 border-[1px] border-slate-200 flex-grow">
+                        <span class="text-xs">Remaining Time</span>
+                        <span class="text-lg {{timerColorRed ? 'text-red-600' : ''}}">{{timerDisplay}}</span>
+                    </div>
+                </div>
+               
+                <div class="flex justify-between">
+                    <div class="flex flex-col p-2 border-[1px] border-slate-200 flex-grow">
+                        <span class="text-xs">Active Supplier</span>
+                        <span class="text-lg">{{auctionHeaderInfo.numberOfActiveSuppliers}}</span>
 
+                    </div>
+                    <div class="flex flex-col p-2 border-[1px] border-slate-200 flex-grow">
+                        <span class="text-xs">Total Suppliers</span>
+                        <span class="text-lg">{{auctionHeaderInfo.numberOfSuppliers}}</span>
+                    </div>
+                    <div class="flex flex-col p-2 border-[1px] border-slate-200 flex-grow">
+                        <span class="text-xs">Best Bid</span>
+                        <span class="text-lg">{{auctionHeaderInfo.bestBid}} USD</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="px-10 py-3">
+            <div class="p-2 border-2 rounded-xl">
+            <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)"
+                class="mat-elevation-z0">
+                <ng-container matColumnDef="rank">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by rank">
+                        Rank
+                    </th>
+                    <td mat-cell *matCellDef="let element"> {{element.rank}} </td>
+                </ng-container>
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name">
+                        Supplier Name
+                    </th>
+                    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                </ng-container>
+                <ng-container matColumnDef="bid">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by bid">
+                        Bid
+                    </th>
+                    <td mat-cell *matCellDef="let element"> {{element.bid}} </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </div>
+        </div>
+        <!-- <mat-divider class="px-3"></mat-divider> -->
+        <div class="h-[50vh] flex flex-grow px-10 justify-evenly flex-wrap mb-[10%]">
+            <div class="flex-1 pt-3 h-full">
+                <div class="p-2 border-2 rounded-xl h-full">
+                <mat-tab-group class="h-full">
+                    <mat-tab class="h-full" label="Best Bids">
+                      <div class="h-full">
+                        <app-auction-chart [config]="auctionChartData"></app-auction-chart>
+                      </div>
+                    </mat-tab>
+                    <mat-tab label="Supplier Wise">
+                      <div>
+                        <!-- <app-supplier-lot-charts></app-supplier-lot-charts> -->
+                      </div>
+                    </mat-tab>
+                  </mat-tab-group>
+                </div>
+            </div>
+            <!-- <mat-divider [vertical]="true"></mat-divider> -->
+            <div class="flex-1 pt-3 px-5 h-full">
+                <div class="border-2 rounded-xl flex h-full">
+                    <ng-container *ngIf="enableChatContainer; then chatContent"></ng-container>
+                    <ng-template #chatContent>
+                        <app-chat-box [config]="dashboardData.suppliers" class="w-full h-auto"></app-chat-box>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

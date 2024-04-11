@@ -4,6 +4,11 @@ import { SupplierHomeComponent } from './supplier-home/supplier-home.component';
 import { RouterModule, Routes } from '@angular/router';
 import { SupplierService } from 'src/shared/services/SupplierService.service';
 import { LiveAuctionService } from 'src/shared/services/LiveAuction.service';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatTableModule } from '@angular/material/table';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule } from '@angular/material/dialog';
 
 const routes: Routes = [
   {

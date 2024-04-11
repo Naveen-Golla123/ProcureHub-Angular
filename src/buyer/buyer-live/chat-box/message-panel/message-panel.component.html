@@ -1,11 +1,31 @@
 <div class="flex flex-col flex-shrink-0 min-h-full h-[1px]">
-    <div class="">
-        Header
+    <div class="p-3 flex flex-col bg-background text-slate-100 ">
+        <div class="text-base">
+            Supplier Name
+        </div>
+        <div class="text-sm">
+            Status
+        </div>
     </div>
-    <div class="flex-grow">
-        chat Box
+    <div class="flex-grow overflow-y-scroll">
+        <div class="flex w-full h-full" *ngIf="config.chats.length == 0">
+            No Conversion
+        </div>
+        <div *ngIf="config.chats.length > 0">
+            <div class="flex {{msg.isSentMsg ? 'justify-end' : 'justify-start'}}" *ngFor="let msg of config.chats">
+                <div class="p-2 m-1 {{msg.isSentMsg ? 'bg-background' : 'bg-slate-200'}}">
+                    {{msg.text}}
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="">
-        Chat Text box
+    <div class="flex items-center">
+        <div class="m-3 flex-grow">
+            <textarea style="width: 100%;" class="border-slate-200 border-2 rounded-md" name="" rows="3"
+                [(ngModel)]="textMessage"></textarea>
+        </div>
+        <div class="px-5">
+            <button class="bg-primary text-white p-4 rounded-lg" (click)="sendMessage()">Send</button>
+        </div>
     </div>
 </div>

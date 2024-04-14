@@ -8,6 +8,15 @@
             <span class="text-xs">Remaining Time</span>
             <span class="text-lg {{timerColorRed ? 'text-red-600' : ''}}">{{timerDisplay}}</span>
         </div>
+        <div class="flex flex-col p-2 border-[1px] border-slate-200 flex-grow justify-center items-center">
+            <div class="relative" (click)="openChatBox()">
+                <img src="../../../assets/icons/chat.png" width="30vh"/>
+                <div class="bg-red-600 p-[0.30rem] rounded-full absolute top-[-2px] right-0" *ngIf="enableChatNotification">
+
+                </div>
+            </div>
+            
+        </div>
     </div>
    
     <div class="flex justify-between">

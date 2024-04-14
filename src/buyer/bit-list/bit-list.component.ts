@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { environment } from 'src/environment';
 import { Auction } from 'src/shared/models/Auction.model';
 import { AuctionStatus } from 'src/shared/models/AuctionStatus.enum';
 import { DataManagerService } from 'src/shared/services/DataManager.service';
@@ -58,6 +59,12 @@ export class BitListComponent implements OnInit {
   }
 
   eventClicked(auction: Auction) {
+    //window.open(`${window.location.origin}/auction/${auction.id}`, "_blank")
+    console.log(auction)
+  }
+
+  navClicked(auction: Auction) {
+    window.open(`${window.location.origin}/auction/${auction.id}`, "_blank")
     console.log(auction)
   }
 }

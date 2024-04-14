@@ -16,7 +16,7 @@ export class ChatBoxComponent implements OnInit {
 
   activeMessagePanel: any = {
     info: null,
-    chats: null,
+    chats: [],
     callbacks: {
       sendMessage: (text: string) => this.sendMessage(text)
     }
@@ -28,6 +28,7 @@ export class ChatBoxComponent implements OnInit {
   ngOnInit(): void {
     this.setActiveSupplier();
     this.getChatData();
+    this.setSignalR();
   }
 
   sendMessage(text: string) {
@@ -40,7 +41,16 @@ export class ChatBoxComponent implements OnInit {
       eventId: Number(localStorage.getItem("eventId")),
       sentBy: Number(userInfo["userId"])
     }).then(msg => {
+      msg["isSent"] = true;
       this.activeMessagePanel.chats.push(msg);
+    });
+  }
+
+  setSignalR() {
+    this.auctionHub._hubConnection?.on('recieveMessage', (message:any)=>{
+      message["isSent"] = false;
+      this.activeMessagePanel.chats.push(message);
+      //this.toastr.show(message.text, message.sentBy + " sent a message");
     });
   }
 
@@ -57,7 +67,7 @@ export class ChatBoxComponent implements OnInit {
 
   setActiveSupplier() {
     console.log(this.config);
-    if(this.config && this.config.length > 0 ){
+    if(this.config && Object.keys(this.config).length > 0 ){
       this.activeMessagePanel.info = this.config[0];
     }
   }

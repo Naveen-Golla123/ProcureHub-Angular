@@ -1,0 +1,11 @@
+<div class="h-full">
+    <div>
+        <mat-form-field>
+            <mat-label>Favorite food</mat-label>
+            <mat-select [(ngModel)]="activeSupplierId" (ngModelChange)="onSelectionChanged($event)">
+                <mat-option *ngFor="let supplier of suppliers" [value]="supplier.id">{{supplier.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+    </div>
+    <canvas id="canvas1" width="100%" class="h-full w-full">{{chart}}</canvas>
+</div>

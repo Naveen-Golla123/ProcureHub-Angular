@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { AfterViewInit, ViewChild } from '@angular/core';
 import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { callback } from 'chart.js/dist/helpers/helpers.core';
+import * as _ from 'lodash';
 import { ToastrService } from 'ngx-toastr';
 import { BuyerDashboard } from 'src/shared/models/BuyerDashboard.model';
 import { AuctionHub } from 'src/shared/services/AuctionHub.service';
@@ -16,9 +18,9 @@ import { LiveAuctionService } from 'src/shared/services/LiveAuction.service';
 export class BuyerLiveComponent implements OnInit {
 
   enableChatContainer: boolean = false;
-  displayedColumns: string[] = ['rank', 'name', 'bid'];
+  displayedColumns: string[] = ['rank', 'name', 'bid', 'isWinner'];
   auctionHeaderInfo: any = {
-
+    callback: null
   };
 
   currentDate = new Date();
@@ -33,6 +35,11 @@ export class BuyerLiveComponent implements OnInit {
     callback: null,
     data: [],
     labels: []
+  };
+
+  supplierWiseChartConfig:any = {
+    callback: null,
+    supplierList: []
   };
   // Convert the time difference to seconds
   totalSeconds = 0;
@@ -61,7 +68,7 @@ export class BuyerLiveComponent implements OnInit {
 
   ngOnInit(): void {
     let eventIdString = localStorage.getItem("eventId");
-    if(eventIdString){
+    if(eventIdString) {
       this.eventId = Number(JSON.parse(eventIdString));
     }
     this.getDashBoardData();
@@ -99,6 +106,10 @@ export class BuyerLiveComponent implements OnInit {
   }
 
   updateUserStatus(res: any) {
+    _.map(this.dashboardData.suppliers,(value:any,key:any)=>{
+      value["status"] = false;
+    });
+
     res.forEach((user: any) => {
       if (this.dashboardData.suppliers[user.userId + ""]) {
         this.dashboardData.suppliers[user.userId + ""]["status"] = true;
@@ -116,8 +127,10 @@ export class BuyerLiveComponent implements OnInit {
     this.auctionHeaderInfo["numberOfActiveSuppliers"] = 0;
     this.auctionHeaderInfo["numberOfSuppliers"] = Object.values(data.suppliers).length;
     this.auctionHeaderInfo["auctionName"] = data.eventInfo.name;
+    this.auctionHeaderInfo["statusCode"] = data.eventInfo.statusCode;
+    this.targetDate = new Date(data.eventInfo.enddate + "T" + data.eventInfo.endtime);
     this.dashboardData.bestBids = data.topBiders;
-    this.dashboardData.ranks = data.ranks
+    this.dashboardData.ranks = data.ranks;
     this.dashboardData.suppliers = data.suppliers;
     this.enableChatContainer = true;
     this.setSingalR();
@@ -129,12 +142,18 @@ export class BuyerLiveComponent implements OnInit {
   }
 
   updateCharts() {
+    // best bids
     this.dashboardData.bestBids.forEach((bid: any) => {
       this.auctionChartData.data.push(bid.bidAmount)
       this.auctionChartData.labels.push(bid.bidTime)
     });
     if (this.auctionChartData.callback) {
       this.auctionChartData.callback();
+    }
+
+    if(this.dashboardData.suppliers && this.supplierWiseChartConfig.callback) {
+      this.supplierWiseChartConfig.suppliers = this.dashboardData.suppliers;
+      this.supplierWiseChartConfig.callback();
     }
   }
 
@@ -146,7 +165,8 @@ export class BuyerLiveComponent implements OnInit {
       rankData.push({
         rank: rank.rank,
         name: rank.supplier.name,
-        bid: rank.totalBid
+        bid: rank.totalBid,
+        isWinner: this.auctionHeaderInfo["statusCode"] == 3 && rank.rank == 1 ? true: false
       });
       if (rank.rank == 1) {
         this.auctionHeaderInfo["bestBid"] = rank.totalBid;
@@ -177,6 +197,10 @@ export class BuyerLiveComponent implements OnInit {
       console.log("Countdown has ended");
       clearInterval(this.intervalId);
     }
+  }
+
+  setSupplierWiseData() {
+    
   }
 
   getTwoDigits(number: number) {

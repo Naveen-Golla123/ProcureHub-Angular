@@ -12,6 +12,9 @@ import { ChatBoxComponent } from './chat-box/chat-box.component';
 import { ChatCardComponent } from './chat-box/chat-card/chat-card.component';
 import { MessagePanelComponent } from './chat-box/message-panel/message-panel.component';
 import { FormsModule } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
 
 const routes:Route[] = [
   {
@@ -36,8 +39,16 @@ const routes:Route[] = [
     MatTableModule, 
     MatDividerModule,
     MatSortModule,
-    MatTabsModule
+    MatTabsModule,
+    MatDialogModule,
+    MatFormFieldModule, 
+    MatSelectModule, 
+    FormsModule
   ],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [{ provide: MAT_DIALOG_DATA, useValue: {} },{
+    provide: MatDialogRef,
+    useValue: {}
+  }]
 })
 export class BuyerLiveModule { }

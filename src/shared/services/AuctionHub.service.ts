@@ -2,6 +2,17 @@ import { Injectable } from "@angular/core";
 import * as signalR from "@microsoft/signalr";
 import { environment } from '../../environment';
 import { DataManagerService } from "./DataManager.service";
+import { DefaultHttpClient, HttpRequest, HttpResponse } from "@microsoft/signalr";
+
+class CustomHttpClient extends DefaultHttpClient {
+    
+    public override send(request: HttpRequest): Promise<HttpResponse> {
+      request.headers = { ...request.headers, "Hello": "Hello1" };
+      return super.send(request);
+    }
+
+}
+
 @Injectable({
     providedIn: 'root'
 })
@@ -11,9 +22,10 @@ export class AuctionHub{
     constructor(private dms: DataManagerService) {
         let self = this;
         this._hubConnection = new signalR.HubConnectionBuilder()
-            .withUrl(`${environment.baseUrl}auction`, {
+            .withUrl(`${environment.baseUrl}auction?EventId=128`, {
                 skipNegotiation: true,
                 transport: signalR.HttpTransportType.WebSockets
+                // httpClient: new CustomHttpClient()
             })
             .withAutomaticReconnect()
             .configureLogging(signalR.LogLevel.Trace)
@@ -25,10 +37,10 @@ export class AuctionHub{
     }
 
     async startHub() {
+        let self = this;
+        let userInfo = self.dms.getUserInfo();
 
-        let userInfo = this.dms.getUserInfo();
-
-        await this._hubConnection?.start().then((res:any)=>{
+        await self._hubConnection?.start().then((res:any)=>{
             let eventIdString = localStorage.getItem("eventId");
             let eventId = 0;
             if(eventIdString){
@@ -42,3 +54,4 @@ export class AuctionHub{
         });
     }
 }
+

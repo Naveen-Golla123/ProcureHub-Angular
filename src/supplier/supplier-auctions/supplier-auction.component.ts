@@ -91,7 +91,7 @@ export class SupplierAuctionComponent {
     this.dataSource.data = this.auctions;
   }  
 
-  openAuction(auction: any){
+  openAuction(auction: any) {
     var targetUrl = window.location.origin + `/auction${auction.id}`
     window.open(targetUrl, "_blank");
   }   

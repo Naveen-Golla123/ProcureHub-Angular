@@ -68,7 +68,7 @@ export class ChatBoxComponent implements OnInit {
   setActiveSupplier() {
     console.log(this.config);
     if(this.config && Object.keys(this.config).length > 0 ){
-      this.activeMessagePanel.info = this.config[0];
+      this.activeMessagePanel.info = this.config[Object.keys(this.config)[0]];
     }
   }
 

@@ -10,6 +10,7 @@ import * as signalR from '@microsoft/signalr';
 import { TitleStrategy } from '@angular/router';
 import { AuctionHub } from 'src/shared/services/AuctionHub.service';
 import { DataManagerService } from 'src/shared/services/DataManager.service';
+import { callback } from 'chart.js/dist/helpers/helpers.core';
 
 @Component({
   selector: 'app-supplier-live',
@@ -32,7 +33,7 @@ export class SupplierLiveComponent implements OnInit {
   ];
   eventId: number = 0;
   auctionHeaderInfo: any = {
-
+    callback: {}
   };
   private api!: any;
   lots: any = {};
@@ -102,7 +103,13 @@ export class SupplierLiveComponent implements OnInit {
 
       if (data.eventInfo) {
         this.auctionHeaderInfo["auctionName"] = data.eventInfo.name;
+        this.auctionHeaderInfo["createdBy"] = data.eventInfo.createdBy;
+        this.auctionHeaderInfo["endDataTime"] = new Date(data.eventInfo.enddate + "T" + data.eventInfo.endtime);
         this.auctionHeaderInfo["numberOfSupplier"] = Object.keys(data.suppliers).length;
+
+        if(this.auctionHeaderInfo.callback["initilaizeUI"]) {
+          this.auctionHeaderInfo.callback["initilaizeUI"]();
+        }
       }
       this.apiResult = data;
       this.processItemsGrid();

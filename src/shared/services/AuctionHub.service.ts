@@ -21,8 +21,9 @@ export class AuctionHub{
     _hubConnection: signalR.HubConnection | undefined;
     constructor(private dms: DataManagerService) {
         let self = this;
+        var eventId = Number(localStorage.getItem("eventId"))
         this._hubConnection = new signalR.HubConnectionBuilder()
-            .withUrl(`${environment.baseUrl}auction?EventId=128`, {
+            .withUrl(`${environment.baseUrl}auction?EventId=${eventId}`, {
                 skipNegotiation: true,
                 transport: signalR.HttpTransportType.WebSockets
                 // httpClient: new CustomHttpClient()

@@ -17,10 +17,10 @@ export class BidHeaderComponent implements OnInit {
   targetDate = new Date("2024-04-15T23:37:59");
   currentDate = new Date();
   timeDifference = 0;
-  timerDisplay="00:00:00";
+  timerDisplay = "00:00:00";
   timerColorRed = false;
   totalSeconds = 0;
-  intervalId:any;
+  intervalId: any;
   enableChatNotification: boolean = false;
 
   activeMessagePanel: any = {
@@ -33,12 +33,17 @@ export class BidHeaderComponent implements OnInit {
   }
 
   constructor(private dialog: MatDialog,
-    public dialogRef: MatDialogRef<MessagePanelComponent>, private auction:AuctionHub,private toastr: ToastrService, private dms: DataManagerService, private chatService: ChatService) {
+    public dialogRef: MatDialogRef<MessagePanelComponent>, private auction: AuctionHub, private toastr: ToastrService, private dms: DataManagerService, private chatService: ChatService) {
 
   }
 
   ngOnInit(): void {
-    this.intervalId = setInterval(()=>this.initalizeTimer(), 1000);
+    this.config.callback["initilaizeUI"] = ()=> this.initilaizeUI();
+  }
+
+  initilaizeUI() {
+    this.intervalId = setInterval(() => this.initalizeTimer(), 1000);
+    this.targetDate = this.config.endDataTime;
     this.timeDifference = this.targetDate.getTime() - this.currentDate.getTime();
     this.totalSeconds = Math.floor(this.timeDifference / 1000);
     this.auction.startHub();
@@ -53,7 +58,7 @@ export class BidHeaderComponent implements OnInit {
     const seconds = Math.floor(this.totalSeconds % 60);
     this.timerDisplay = `${this.getTwoDigits(hours)}:${this.getTwoDigits(minutes)}:${this.getTwoDigits(seconds)}`;
     this.totalSeconds--;
-    if(this.totalSeconds < 300){
+    if (this.totalSeconds < 300) {
       this.timerColorRed = true;
     }
     if (this.totalSeconds < 0) {
@@ -63,7 +68,7 @@ export class BidHeaderComponent implements OnInit {
   }
 
   setSignalR() {
-    this.auction._hubConnection?.on('recieveMessage', (message:any)=>{
+    this.auction._hubConnection?.on('recieveMessage', (message: any) => {
       this.enableChatNotification = true;
       message["isSent"] = false;
       this.activeMessagePanel.chats.push(message);
@@ -93,7 +98,7 @@ export class BidHeaderComponent implements OnInit {
     var userInfo = this.dms.getUserInfo();
     this.auction._hubConnection?.invoke("SendMessage", {
       text: text,
-      sentTo: 18,
+      sentTo: this.config.createdBy,
       eventId: Number(localStorage.getItem("eventId")),
       sentBy: Number(userInfo["userId"])
     }).then(msg => {
@@ -104,17 +109,16 @@ export class BidHeaderComponent implements OnInit {
 
   getChatData() {
     let eventId = Number(localStorage.getItem("eventId"));
-    let userId = 18;
-    this.activeMessagePanel.userInfo = this.config[""+userId];
+    let userId = this.config.createdBy;
+    this.activeMessagePanel.userInfo = this.config["" + userId];
     this.chatService.getChatData(eventId, userId).subscribe((res: any) => {
-
       this.activeMessagePanel.chats = res;
     });
   }
 
   setActiveSupplier() {
     console.log(this.config);
-    if(this.config && this.config.length > 0 ){
+    if (this.config && this.config.length > 0) {
       this.activeMessagePanel.info = this.config[0];
     }
   }

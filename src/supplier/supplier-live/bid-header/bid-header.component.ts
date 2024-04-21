@@ -22,6 +22,8 @@ export class BidHeaderComponent implements OnInit {
   totalSeconds = 0;
   intervalId: any;
   enableChatNotification: boolean = false;
+  userInfo:any;
+  displayStatus: any;
 
   activeMessagePanel: any = {
     info: null,
@@ -39,6 +41,10 @@ export class BidHeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.config.callback["initilaizeUI"] = ()=> this.initilaizeUI();
+    if(localStorage.getItem("UserInfo")){
+      let temp:any = localStorage.getItem("UserInfo");
+      this.userInfo = JSON.parse(temp);
+    }
   }
 
   initilaizeUI() {

@@ -16,6 +16,7 @@ export class SupplierGaurd implements CanActivate {
         if (userInfo && userInfo.isSupplier == 'True') {
             return true;
         } else {
+            this.dataManagerService.clearToken();
             this.router.navigate(['/auth'], {relativeTo: this.route_.parent})
             return false;
         }

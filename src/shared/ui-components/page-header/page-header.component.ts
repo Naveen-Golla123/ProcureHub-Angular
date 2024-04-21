@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-page-header',
@@ -10,12 +10,13 @@ export class PageHeaderComponent {
 
   @Input("config") config: any;
 
-  constructor(private router: Router) {
+  constructor(private router: Router,
+    private route: ActivatedRoute
+  ) {
 
   }
 
   navigateBack(){
-    this.router.navigate(['dashboard'])
+    window.location.href = window.location.origin + "/buyerHome";
   }
-
 }

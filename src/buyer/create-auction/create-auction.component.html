@@ -26,27 +26,27 @@
                         <label for="businessUnit" class="block text-sm font-medium leading-6 text-gray-900">Business
                             Category</label>
                         <div class="mt-1 rounded-md">
-                            <select name="businessUnit" id="businessUnit" [disabled]="isReadOnly"
+                            <select name="businessUnit" id="businessUnit" [disabled]="isReadOnly" [(ngModel)]="auction.businessUnit"
                                 class="rounded-md border-0 p-[7px] pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                                <option>
+                                <option value="1">
                                     Technology
                                 </option>
-                                <option>
+                                <option value="2">
                                     E-commerce
                                 </option>
-                                <option>
+                                <option value="3">
                                     Event Management
                                 </option>
-                                <option>
+                                <option value="4">
                                     Construction
                                 </option>
-                                <option>
+                                <option value="5">
                                     Logistics
                                 </option>
-                                <option>
+                                <option value="6">
                                     Healthcare
                                 </option>
-                                <option>
+                                <option value="7">
                                     Others
                                 </option>
                             </select>
@@ -125,6 +125,46 @@
                <app-supplier [eventId]="eventId" [readOnly]="isReadOnly"></app-supplier>
             </mat-expansion-panel>
 
+            <mat-expansion-panel *ngIf="!isNewAuction" disabled="{{isNewAuction}}">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Rank Attributes
+                    </mat-panel-title>
+                    <mat-panel-description>
+                        Weight the attributes out of 10
+                    </mat-panel-description>
+                    
+                </mat-expansion-panel-header>
+                <div class="flex">
+                    <div class="p-3 inline-block">
+                        <label for="startDate" class="text-sm font-medium leading-6 text-gray-900"> Price </label>
+                        <div class="mt-1 rounded-md">
+                            <input type="number" name="price" id="price" [(ngModel)]="auction.priceWeight" [disabled]="isReadOnly"
+                                class="block rounded-md border-0 py-1.5 pl-7 pr-1 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                placeholder="" />
+                        </div>
+                    </div>
+                    <div class="p-3">
+                        <label for="starttime" class="text-sm font-medium leading-6 text-gray-900"> Quality </label>
+                        <div class="mt-1 rounded-md">
+                            <input type="number" name="price" id="price" [(ngModel)]="auction.qualityWeight"  [disabled]="isReadOnly"
+                                class="block rounded-md border-0 py-1.5 pl-7 pr-1 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                placeholder="" />
+                        </div>
+                    </div>
+                    <div class="p-3">
+                        <label for="enddate" class="text-sm font-medium leading-6 text-gray-900"> Delivery Time </label>
+                        <div class="mt-1 rounded-md">
+                            <input type="number" name="price" id="price" [disabled]="isReadOnly" [(ngModel)]="auction.deliveryTimeWeight"
+                                class="block rounded-md border-0 py-1.5 pl-7 pr-1 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                placeholder="" />
+                        </div>
+                    </div>
+                </div>
+             
+               
+            </mat-expansion-panel>
+
             <mat-expansion-panel *ngIf="!isNewAuction"  disabled="{{isNewAuction}}">
                 <mat-expansion-panel-header>
                     <mat-panel-title>
@@ -142,7 +182,9 @@
     <div class="flex justify-end px-16 py-10">
         <button class="bg-white text-primary p-2 rounded-lg w-[200px] shadow-md hover:shadow-2xl mr-5" (click)="createEvent()">{{'Cancel'}}</button> 
         
-        <button class="bg-primary text-white p-2 rounded-lg w-[200px] shadow-md hover:shadow-2xl mr-5" (click)="saveAsDraft()">{{'Save As Draft'}}</button>
+        <button class="bg-primary text-white p-2 rounded-lg w-[200px] shadow-md hover:shadow-2xl mr-5" *ngIf="auction.statusCode==1" (click)="saveAsDraft()">{{'Save As Draft'}}</button>
+
+        <button class="bg-primary text-white p-2 rounded-lg w-[200px] shadow-md hover:shadow-2xl mr-5" *ngIf="auction.statusCode==2" (click)="backToDraft()">{{'Back to Draft'}}</button>
 
         <button class="bg-primary text-white p-2 rounded-lg w-[200px] shadow-md hover:shadow-2xl mr-5" *ngIf="!isNewAuction" (click)="submitAuction()">{{'Submit'}}</button>
     </div>

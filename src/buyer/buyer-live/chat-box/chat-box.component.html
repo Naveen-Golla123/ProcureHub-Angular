@@ -2,7 +2,9 @@
     <div class="flex h-full border-2 rounded-xl ">
         <div name="namelist" class="w-[30%] overflow-y-scroll" >
             <div *ngFor="let card of config | keyvalue" class="cursor-pointer" (click)="contactClicked(card)">
-                <app-chat-card [config]="card.value"></app-chat-card>
+                <div class="{{card.key == activeMessagePanel.id ? 'bg-background' : ''}}">
+                    <app-chat-card [config]="card.value" ></app-chat-card>
+                </div>
             </div>
         </div>
         <mat-divider [vertical]="true" class="h-full"></mat-divider>

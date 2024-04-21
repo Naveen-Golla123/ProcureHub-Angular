@@ -17,6 +17,7 @@ export class ChatBoxComponent implements OnInit {
   activeMessagePanel: any = {
     info: null,
     chats: [],
+    id: null,
     callbacks: {
       sendMessage: (text: string) => this.sendMessage(text)
     }
@@ -49,7 +50,9 @@ export class ChatBoxComponent implements OnInit {
   setSignalR() {
     this.auctionHub._hubConnection?.on('recieveMessage', (message:any)=>{
       message["isSent"] = false;
-      this.activeMessagePanel.chats.push(message);
+      if(this.activeMessagePanel.id == message.sentBy) {
+        this.activeMessagePanel.chats.push(message);
+      }
       //this.toastr.show(message.text, message.sentBy + " sent a message");
     });
   }
@@ -69,12 +72,14 @@ export class ChatBoxComponent implements OnInit {
     console.log(this.config);
     if(this.config && Object.keys(this.config).length > 0 ){
       this.activeMessagePanel.info = this.config[Object.keys(this.config)[0]];
+      this.activeMessagePanel.id = this.activeMessagePanel?.info?.id;
     }
   }
 
   contactClicked(value: any) {
     console.log(value);
     this.activeMessagePanel.info = value.value;
+    this.activeMessagePanel.id = this.activeMessagePanel?.info?.id;
     this.getChatData();
   }
 }

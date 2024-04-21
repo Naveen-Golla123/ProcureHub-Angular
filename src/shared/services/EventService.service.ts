@@ -103,6 +103,26 @@ export class EventService {
         });
     }
 
+    changeStatus(eventId: number, status: number) {
+        let url = environment.baseUrl + `api/event/ChangeStatus/${eventId}/${status}`;
+        return this.httpClient.post(url, {} , {
+            headers : {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${this.dms.getToken()}`
+            }
+        })
+    }
+
+    backToDraft(eventId:number) {
+        let url = environment.baseUrl + `api/event/backtodraft/${eventId}`;
+        return this.httpClient.post(url, {} , {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${this.dms.getToken()}`
+            }
+        })
+    }
+
     
 
 

@@ -22,7 +22,8 @@ export class CreateAuctionComponent implements OnInit {
   headerConfig: any = {
     title: "Create Auction",
     subTitle: "",
-    enableSubTitle: false
+    enableSubTitle: false,
+    backNavigation: ""
   }
   //@ViewChild(MatPaginator) paginator: MatPaginator;
   public supplierList: Supplier[] = [];
@@ -74,6 +75,10 @@ export class CreateAuctionComponent implements OnInit {
         endDate: "",
         endTime: "",
         statusCode: 1,
+        priceWeight: 0,
+        deliveryTimeWeight: 0,
+        qualityWeight: 0,
+        businessUnit: 2,
         displayStatus: AuctionStatus[1]
       }
     } else {
@@ -94,7 +99,11 @@ export class CreateAuctionComponent implements OnInit {
         startTime: result.starttime,
         endDate: result.enddate,
         endTime: result.endtime,
+        priceWeight: result.priceWeight,
+        deliveryTimeWeight: result.deliveryTimeWeight,
+        qualityWeight: result.qualityWeight,
         statusCode: result.statusCode,
+        businessUnit: result.businessUnit,
         displayStatus: AuctionStatus[statusCode]
       }
       this.headerConfig.title = this.auction.name;
@@ -102,8 +111,20 @@ export class CreateAuctionComponent implements OnInit {
       this.headerConfig.enableSubTitle = true;
       if (this.auction.statusCode != 1) {
         this.isReadOnly = true;
+      } else {
+        this.isReadOnly = false;
       }
       this.spinnerService.hide();
+    });
+  }
+
+  backToDraft() {
+    // this.eventService.
+    if(this.auction.id == 0) {
+      return;
+    }
+    this.eventService.backToDraft(this.auction.id).subscribe(res=>{
+      this.getEventDetails();
     });
   }
 
@@ -121,6 +142,10 @@ export class CreateAuctionComponent implements OnInit {
         "enddate": self.auction.endDate,
         "starttime": self.auction.startTime,
         "endtime": self.auction.endTime,
+        "priceWeight": self.auction.priceWeight,
+        "deliveryTimeWeight": self.auction.deliveryTimeWeight,
+        "qualityWeight": self.auction.qualityWeight,
+        "businessUnit": 3,
         "lots": [],
         "suppliers": []
       }).toPromise();
@@ -147,12 +172,15 @@ export class CreateAuctionComponent implements OnInit {
         "id": self.eventId,
         "name": self.auction.name,
         "type": "1",
-        "businessType": 2,
+        "businessUnit": self.auction.businessUnit,
         "description": self.auction.description,
         "startdate": self.auction.startdate,
         "enddate": self.auction.endDate,
         "starttime": self.auction.startTime,
         "endtime": self.auction.endTime,
+        "priceWeight": self.auction.priceWeight,
+        "deliveryTimeWeight": self.auction.deliveryTimeWeight,
+        "qualityWeight": self.auction.qualityWeight,
         "lots": [],
         "suppliers": []
       }).toPromise();

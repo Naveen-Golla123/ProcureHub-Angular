@@ -11,6 +11,7 @@ import { TitleStrategy } from '@angular/router';
 import { AuctionHub } from 'src/shared/services/AuctionHub.service';
 import { DataManagerService } from 'src/shared/services/DataManager.service';
 import { callback } from 'chart.js/dist/helpers/helpers.core';
+import { AuctionStatus } from 'src/shared/models/AuctionStatus.enum';
 
 @Component({
   selector: 'app-supplier-live',
@@ -33,7 +34,10 @@ export class SupplierLiveComponent implements OnInit {
   ];
   eventId: number = 0;
   auctionHeaderInfo: any = {
-    callback: {}
+    callback: {},
+    displayStatus: "",
+    statusCode: null
+
   };
   private api!: any;
   lots: any = {};
@@ -53,7 +57,7 @@ export class SupplierLiveComponent implements OnInit {
 
   initiateDashboard() {
     let eventIdString = localStorage.getItem("eventId");
-    if(eventIdString){
+    if (eventIdString) {
       this.eventId = Number(JSON.parse(eventIdString));
     }
     this.spinnerService.show();
@@ -91,8 +95,12 @@ export class SupplierLiveComponent implements OnInit {
         this.activeLot = lotValues[0];
       }
 
+      this.auctionHeaderInfo["statusCode"] = Number(data.eventInfo.statusCode);
+      this.auctionHeaderInfo["displayStatus"] = AuctionStatus[Number(data.eventInfo.statusCode)];
+
       if (data.ranks) {
         this.auctionHeaderInfo["rank"] = data.ranks[this.userInfo["userId"]]?.rank;
+
 
         _.each(data.ranks, (value: any, key: any) => {
           if (value.rank == 1) {
@@ -107,7 +115,7 @@ export class SupplierLiveComponent implements OnInit {
         this.auctionHeaderInfo["endDataTime"] = new Date(data.eventInfo.enddate + "T" + data.eventInfo.endtime);
         this.auctionHeaderInfo["numberOfSupplier"] = Object.keys(data.suppliers).length;
 
-        if(this.auctionHeaderInfo.callback["initilaizeUI"]) {
+        if (this.auctionHeaderInfo.callback["initilaizeUI"]) {
           this.auctionHeaderInfo.callback["initilaizeUI"]();
         }
       }
@@ -138,7 +146,7 @@ export class SupplierLiveComponent implements OnInit {
   }
 
   lotSwicth(lotId: number) {
-    
+
   }
 
   onGridReady = (event: any) => {

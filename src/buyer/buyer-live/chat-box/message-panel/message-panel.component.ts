@@ -12,7 +12,7 @@ export class MessagePanelComponent implements OnInit {
 
   @Input('config') config: any;
   textMessage: string = ""
-
+  isSupplierSide = false;
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
   public dialogRef: MatDialogRef<MessagePanelComponent>) {
 
@@ -20,7 +20,15 @@ export class MessagePanelComponent implements OnInit {
 
   ngOnInit(): void {
     if(this.data && this.data.isSupplier){
+      if(localStorage.getItem("UserInfo")){
+        let temp:any = localStorage.getItem("UserInfo");
+        var userInfo = JSON.parse(temp);
+      }
       this.config = this.data;
+      this.config.info = {
+        name : userInfo.name
+      };
+      this.isSupplierSide = true;
     }
   }
 

@@ -8,6 +8,10 @@
             <span class="text-xs">Remaining Time</span>
             <span class="text-lg {{timerColorRed ? 'text-red-600' : ''}}">{{timerDisplay}}</span>
         </div>
+        <div class="flex-col p-2 border-[1px] border-slate-200 flex pr-10">
+            <span class="text-xs">Participant Name</span>
+            <span class="text-lg">{{userInfo.name}}</span>
+        </div>
         <div class="flex flex-col p-2 border-[1px] border-slate-200 flex-grow justify-center items-center">
             <div class="relative" (click)="openChatBox()">
                 <img src="../../../assets/icons/chat.png" width="30vh"/>
@@ -15,7 +19,6 @@
 
                 </div>
             </div>
-            
         </div>
     </div>
    
@@ -27,6 +30,10 @@
         <div class="flex flex-col p-2 border-[1px] border-slate-200 flex-grow">
             <span class="text-xs">Total Suppliers</span>
             <span class="text-lg">{{config.numberOfSupplier}}</span>
+        </div>
+        <div class="flex-col p-2 border-[1px] border-slate-200 flex pr-10">
+            <span class="text-xs">Status</span>
+            <span class="text-lg bg-green-700 text-white font-medium px-2 rounded-lg">{{config.displayStatus}}</span>
         </div>
         <div class="flex flex-col p-2 border-[1px] border-slate-200 flex-grow">
             <span class="text-xs">Best Bid</span>

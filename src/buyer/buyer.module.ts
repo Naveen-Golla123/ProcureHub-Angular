@@ -24,6 +24,11 @@ const routes: Routes = [
         outlet: "buyerHome"
       },
       {
+        path: 'supplierList',
+        loadChildren: () => import('./supplier-list/supplier-list.module').then(m=>m.SupplierListModule),
+        outlet: "buyerHome"
+      },
+      {
         path: 'settings',
         loadChildren: ()=> import('./settings/setting.module').then(m=>m.SettingModule),
         outlet: "buyerHome"

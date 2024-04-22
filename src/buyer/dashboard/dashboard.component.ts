@@ -30,7 +30,7 @@ export class DashboardComponent {
     {
       icon: "supplier.png",
       name: "Suppliers",
-      route: "../createauction",
+      route: "../supplierList",
       callback: ()=>{},
       params: {
       }

@@ -2,7 +2,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { Component, Input } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Lot } from 'src/shared/models/Lot';
-import { MatDialog } from '@angular/material/dialog'
+import { MatDialog } from '@angular/material/dialog';
 import { LotDetailsComponent } from '../lot-details/lot-details.component';
 import { LotService } from 'src/shared/services/LotService.service';
 import { DataManagerService } from 'src/shared/services/DataManager.service';
@@ -19,7 +19,7 @@ export class LotGridComponent {
   public lots: Lot[] = [];
   dataSource = new MatTableDataSource<Lot>();
   selection = new SelectionModel<Lot>(true, []);
-  displayedColumns: string[] = ['select', 'name', 'totalPrice', "edit"];
+  displayedColumns: string[] = ['select', 'name', "edit"];
   @Input('eventId') eventId: any;
   @Input("readOnly") readOnly: any;
 
@@ -33,21 +33,6 @@ export class LotGridComponent {
   ngOnInit(): void {
     let self = this;
     self.getAllLots();
-    // for (var i = 1; i < 10; i++) {
-    //   this.lots.push({
-    //     name: "Supplier Name" + i,
-    //     totalPrice: i * 100,
-    //     description: "description",
-    //     items: [
-    //       {
-    //         name: "Computer",
-    //         basePrice: 100,
-    //         qunatity: 2,
-    //         UiId: 1
-    //       }
-    //     ]
-    //   })
-    // }
   }
 
   isAllSelected() {
@@ -56,7 +41,6 @@ export class LotGridComponent {
     return numSelected === numRows;
   }
 
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle() {
     this.isAllSelected() ?
       this.selection.clear() :
@@ -123,7 +107,6 @@ export class LotGridComponent {
 
   getAllLots() {
     let self = this;
-    // this.lots
     this.spinnerService.show();
     this.lotService.getAllLots(this.eventId).subscribe(result => {
       console.log(result);

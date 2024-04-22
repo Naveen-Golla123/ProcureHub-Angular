@@ -10,6 +10,8 @@ import { AuctionStatus } from 'src/shared/models/AuctionStatus.enum';
 import { BuyerDashboard } from 'src/shared/models/BuyerDashboard.model';
 import { AuctionHub } from 'src/shared/services/AuctionHub.service';
 import { LiveAuctionService } from 'src/shared/services/LiveAuction.service';
+import { jsPDF } from "jspdf";
+import autoTable from 'jspdf-autotable';
 
 @Component({
   selector: 'app-buyer-live',
@@ -24,7 +26,7 @@ export class BuyerLiveComponent implements OnInit {
     callback: null
   };
 
-  userInfo:any;
+  userInfo: any;
 
   currentDate = new Date();
 
@@ -40,7 +42,7 @@ export class BuyerLiveComponent implements OnInit {
     labels: []
   };
 
-  supplierWiseChartConfig:any = {
+  supplierWiseChartConfig: any = {
     callback: null,
     supplierList: []
   };
@@ -49,7 +51,7 @@ export class BuyerLiveComponent implements OnInit {
   intervalId: any;
   rankDataSource: any;
   attributeDataSourse: any;
-  eventId:any;
+  eventId: any;
 
   @ViewChild(MatSort) sort: MatSort | undefined;
   dashboardData: BuyerDashboard = {
@@ -76,11 +78,11 @@ export class BuyerLiveComponent implements OnInit {
 
   ngOnInit(): void {
     let eventIdString = localStorage.getItem("eventId");
-    if(eventIdString) {
+    if (eventIdString) {
       this.eventId = Number(JSON.parse(eventIdString));
     }
-    if(localStorage.getItem("UserInfo")){
-      let temp:any = localStorage.getItem("UserInfo");
+    if (localStorage.getItem("UserInfo")) {
+      let temp: any = localStorage.getItem("UserInfo");
       this.userInfo = JSON.parse(temp);
     }
     this.getDashBoardData();
@@ -96,7 +98,7 @@ export class BuyerLiveComponent implements OnInit {
   }
 
   getOnlineUsers() {
-    this.auctionHub._hubConnection?.invoke("GetOnlineUsers", this.eventId!.toString()).then((res:any)=>{
+    this.auctionHub._hubConnection?.invoke("GetOnlineUsers", this.eventId!.toString()).then((res: any) => {
       this.updateUserStatus(res);
     });
   }
@@ -119,7 +121,7 @@ export class BuyerLiveComponent implements OnInit {
   }
 
   updateUserStatus(res: any) {
-    _.map(this.dashboardData.suppliers,(value:any,key:any)=>{
+    _.map(this.dashboardData.suppliers, (value: any, key: any) => {
       value["status"] = false;
     });
     let activeSupplierCount = 0;
@@ -160,15 +162,19 @@ export class BuyerLiveComponent implements OnInit {
 
   updateCharts() {
     // best bids
+    this.auctionChartData.data = [];
+    this.auctionChartData.labels = [];
     this.dashboardData.bestBids.forEach((bid: any) => {
       this.auctionChartData.data.push(bid.bidAmount)
+      let date = new Date(bid.bidTime);
+      bid.bidTime = date.getMonth() + "/" + date.getMonth() + " - " + date.getHours() + ":" + date.getMinutes();
       this.auctionChartData.labels.push(bid.bidTime)
     });
     if (this.auctionChartData.callback) {
       this.auctionChartData.callback();
     }
 
-    if(this.dashboardData.suppliers && this.supplierWiseChartConfig.callback) {
+    if (this.dashboardData.suppliers && this.supplierWiseChartConfig.callback) {
       this.supplierWiseChartConfig.suppliers = this.dashboardData.suppliers;
       this.supplierWiseChartConfig.callback();
     }
@@ -186,7 +192,7 @@ export class BuyerLiveComponent implements OnInit {
         rank: rank.rank,
         name: rank.supplier.name,
         bid: rank.totalBid,
-        isWinner: this.auctionHeaderInfo["statusCode"] == 5 && rank.rank == 1 ? true: false
+        isWinner: this.auctionHeaderInfo["statusCode"] == 5 && rank.rank == 1 ? true : false
       });
       if (rank.rank == 1) {
         this.auctionHeaderInfo["bestBid"] = rank.totalBid;
@@ -198,7 +204,7 @@ export class BuyerLiveComponent implements OnInit {
         rank: rank.rank,
         name: rank.supplier.name,
         bid: rank.totalBid,
-        isWinner: this.auctionHeaderInfo["statusCode"] == 5 && rank.rank == 1 ? true: false
+        isWinner: this.auctionHeaderInfo["statusCode"] == 5 && rank.rank == 1 ? true : false
       });
       if (rank.rank == 1) {
         this.auctionHeaderInfo["bestBid"] = rank.totalBid;
@@ -206,6 +212,58 @@ export class BuyerLiveComponent implements OnInit {
     });
     this.attributeDataSourse.data = attributeRankData;
 
+  }
+
+  downloadInvoice() {
+
+    let rankerInfoId = this.getBestBidder();
+    let rankerInfo = this.dashboardData.suppliers[rankerInfoId];
+    var doc = new jsPDF();
+    let header = this.getHeader(rankerInfo);
+    //let html = this.getHtml(rankerInfo);
+    // Save the document
+    const columns = [['First Column', 'Second Column', 'Third Column']];
+    const data = [
+      ['Data 1', 'Data 2', 'Data 3'],
+      ['Data 1', 'Data 2', 'Data 3']
+    ];
+    var img = new Image();
+    doc.addImage("../../assets/icons/winner_icon.png", 'png', 10, 15, 10, 10);
+    autoTable(doc,this.getHtml(rankerInfo));
+    doc.text(header, 10, 10);
+    doc.save('table.pdf');
+  }
+
+  getBestBidder() {
+    let rankerInfo = null;
+    _.map(this.dashboardData!.ranks, (value, key, index) => {
+      if (value.rank == 1) {
+        rankerInfo = value;
+      }
+    });
+    return rankerInfo!.supplier!.id;
+  }
+
+  getHeader(rankerInfo: any) {
+    return "Congraulations " + rankerInfo.name + "!! : " + "INV-CBP1679";
+  }
+
+  getHtml(rankerInfo: any) {
+    let bidData:any[] = [];
+    rankerInfo!.bidTracker.forEach((bid: any) => {
+      let date = new Date(bid.bidTime);
+      let modifiedDate = date.getMonth() + "/" + date.getMonth() + " - " + date.getHours() + ":" + date.getMinutes();
+      bidData.push([modifiedDate, bid.bidAmount + " USD"]);
+    });
+
+    return  {
+      head: [['Bid Time', 'Bid Amount']],
+      body: bidData,
+      startY: 30,
+      didDrawPage: (dataArg:any) => {
+
+      }
+    }
   }
 
   announceSortChange(sortState: Sort) {
@@ -233,7 +291,7 @@ export class BuyerLiveComponent implements OnInit {
   }
 
   setSupplierWiseData() {
-    
+
   }
 
   getTwoDigits(number: number) {

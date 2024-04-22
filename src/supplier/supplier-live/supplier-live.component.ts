@@ -181,5 +181,5 @@ export class SupplierLiveComponent implements OnInit {
       totalPrice += value.totalPrice;
     });
     this.totalPrice = totalPrice;
-  }
+  } 
 } 

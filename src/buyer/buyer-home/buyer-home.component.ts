@@ -26,6 +26,7 @@ export class BuyerHomeComponent implements OnInit {
   settingsClicked() {
     this.router.navigate([{ outlets: { buyerHome: ['settings'] } }], { relativeTo: this.route.parent, skipLocationChange: true });
   }
+  
 
   createAuctionClicked() {
     this.dataService.setDataStoreValue("eventCode", 0);

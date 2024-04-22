@@ -79,6 +79,8 @@ export class SupplierLotChartsComponent implements OnInit {
     this.chartValues = [];
     supplierBidTrack.forEach((supplier: any) => {
       //this.chartData.push({ x: supplier.bidTime, y: supplier.bidAmount });
+      let date = new Date(supplier.bidTime);
+      supplier.bidTime = date.getMonth() + "/" + date.getMonth()+ " - " + date.getHours() + ":" + date.getMinutes();
       this.chartLables.push(supplier.bidTime);
       this.chartValues.push(supplier.bidAmount);
     });

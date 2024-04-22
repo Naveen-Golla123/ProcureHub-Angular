@@ -38,7 +38,6 @@ export class SupplierRepositoryComponent implements OnInit{
 
   getSupplierData() {
     this.spinnerService.show();
-    this.spinnerService.show();
     this.supplierService.getAllSuppliers().subscribe((result:any)=>{
       this.spinnerService.hide();
       if(result && result.length > 0) {

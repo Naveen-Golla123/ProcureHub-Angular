@@ -151,7 +151,7 @@ export class CreateAuctionComponent implements OnInit {
       }).toPromise();
 
       // var result = lastValueFrom(resultPipe);
-
+      this.isNewAuction = false;
       if (result) {
         self.dms.setDataStoreValue("eventInfo", result);
         self.eventId = result["id"];

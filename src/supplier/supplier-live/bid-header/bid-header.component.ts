@@ -22,8 +22,9 @@ export class BidHeaderComponent implements OnInit {
   totalSeconds = 0;
   intervalId: any;
   enableChatNotification: boolean = false;
-  userInfo:any;
+  userInfo: any;
   displayStatus: any;
+  chatMessagesSet = new Set<number>();
 
   activeMessagePanel: any = {
     info: null,
@@ -40,9 +41,9 @@ export class BidHeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.config.callback["initilaizeUI"] = ()=> this.initilaizeUI();
-    if(localStorage.getItem("UserInfo")){
-      let temp:any = localStorage.getItem("UserInfo");
+    this.config.callback["initilaizeUI"] = () => this.initilaizeUI();
+    if (localStorage.getItem("UserInfo")) {
+      let temp: any = localStorage.getItem("UserInfo");
       this.userInfo = JSON.parse(temp);
     }
   }
@@ -75,10 +76,13 @@ export class BidHeaderComponent implements OnInit {
 
   setSignalR() {
     this.auction._hubConnection?.on('recieveMessage', (message: any) => {
-      this.enableChatNotification = true;
-      message["isSent"] = false;
-      this.activeMessagePanel.chats.push(message);
-      this.toastr.show(message.text, message.sentBy + " sent a message");
+      if (!this.chatMessagesSet.has(message.id)) {
+        this.chatMessagesSet.add(message.id);
+        this.enableChatNotification = true;
+        message["isSent"] = false;
+        this.activeMessagePanel.chats.push(message);
+        this.toastr.show(message.text, message.sentBy + " sent a message");
+      }
     });
   }
 

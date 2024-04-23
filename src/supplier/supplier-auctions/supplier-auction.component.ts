@@ -38,10 +38,15 @@ export class SupplierAuctionComponent {
   }
 
   ngOnInit(): void {
+
+    this.getData();
+  }
+
+  getData() {
     this.spinnerService.show();
     this.supplierService.getInvitedEvents().subscribe((events: any) => {
-
       if (events && events.length > 0) {
+        this.auctions = [];
         events.forEach((event: any) => {
           var event_: SupplierAuction = {
             name: event.name,
@@ -61,7 +66,6 @@ export class SupplierAuctionComponent {
       this.masterAuctions = this.auctions;
       this.spinnerService.hide();
     })
-
   }
 
   accepted(auction: any) {
@@ -95,4 +99,8 @@ export class SupplierAuctionComponent {
     var targetUrl = window.location.origin + `/auction/${auction.id}`
     window.open(targetUrl, "_blank");
   }   
+
+  reloadData() {
+    this.getData();
+  }
 }

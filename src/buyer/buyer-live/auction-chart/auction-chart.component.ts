@@ -9,7 +9,7 @@ import { last } from 'lodash';
 })
 export class AuctionChartComponent implements OnInit {
   @Input("config") config:any;
-  chart: any = []
+  chart: Chart | undefined = undefined;
   constructor() {
     
   }

@@ -81,7 +81,7 @@ export class BidHeaderComponent implements OnInit {
         this.enableChatNotification = true;
         message["isSent"] = false;
         this.activeMessagePanel.chats.push(message);
-        this.toastr.show(message.text, message.sentBy + " sent a message");
+        this.toastr.show(message.text, "ProcureHub Admin sent a message");
       }
     });
   }

@@ -33,10 +33,15 @@ export class BitListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    
+    this.getData();
+  }
+
+  getData(){
     this.spinnerService.show();
     this.eventService.getAllEvents().subscribe((events: any) => {
-      
       if (events && events.length > 0) {
+        this.auctions = [];
         events.forEach((event: any) => {
           var event_: Auction = {
             name: event.name,
@@ -54,13 +59,16 @@ export class BitListComponent implements OnInit {
       }
       this.dataSource.data = this.auctions;
       this.spinnerService.hide();
-    })
-    
+    });
   }
 
   eventClicked(auction: Auction) {
     //window.open(`${window.location.origin}/auction/${auction.id}`, "_blank")
     console.log(auction)
+  }
+
+  reloadData() {
+    this.getData();
   }
 
   navClicked(auction: Auction) {

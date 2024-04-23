@@ -28,7 +28,7 @@
                 
                 <div class="flex justify-end bg-white rounded-sm p-5">
                     <button class="bg-white text-primary p-2 rounded-lg w-[200px] shadow-md hover:shadow-2xl mr-5">{{'Back to Auctions'}}</button> 
-                    <button class="bg-primary text-white p-2 rounded-lg w-[200px] shadow-md hover:shadow-2xl mr-5" (click)="placeBid()">{{'Place Bid'}}</button>
+                    <button class="{{auctionHeaderInfo.statusCode == 5 ? 'bg-slate-400 text-black pointer-events-none' : 'bg-primary text-white cursor-pointer'}}  p-2 rounded-lg w-[200px] shadow-md hover:shadow-2xl mr-5" (click)="placeBid()">{{'Place Bid'}}</button>
                 </div>
             </div>
         </div> 

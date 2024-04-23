@@ -18,6 +18,7 @@ export class AuctionChartComponent implements OnInit {
   }
 
   setData() {
+    this.chart?.destroy();
     this.chart = new Chart('canvas', {
       type: 'line',
       data: {

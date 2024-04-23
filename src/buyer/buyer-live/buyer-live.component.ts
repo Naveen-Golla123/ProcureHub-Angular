@@ -167,8 +167,8 @@ export class BuyerLiveComponent implements OnInit {
     this.dashboardData.bestBids.forEach((bid: any) => {
       this.auctionChartData.data.push(bid.bidAmount)
       let date = new Date(bid.bidTime);
-      bid.bidTime = date.getMonth() + "/" + date.getMonth() + " - " + date.getHours() + ":" + date.getMinutes();
-      this.auctionChartData.labels.push(bid.bidTime)
+      let bidTime = date.getMonth() + "/" + date.getDate() + " - " + date.getHours() + ":" + date.getMinutes();
+      this.auctionChartData.labels.push(bidTime)
     });
     if (this.auctionChartData.callback) {
       this.auctionChartData.callback();
@@ -231,7 +231,7 @@ export class BuyerLiveComponent implements OnInit {
     doc.addImage("../../assets/icons/winner_icon.png", 'png', 10, 15, 10, 10);
     autoTable(doc,this.getHtml(rankerInfo));
     doc.text(header, 10, 10);
-    doc.save('table.pdf');
+    doc.save('Invoice.pdf');
   }
 
   getBestBidder() {
@@ -252,7 +252,7 @@ export class BuyerLiveComponent implements OnInit {
     let bidData:any[] = [];
     rankerInfo!.bidTracker.forEach((bid: any) => {
       let date = new Date(bid.bidTime);
-      let modifiedDate = date.getMonth() + "/" + date.getMonth() + " - " + date.getHours() + ":" + date.getMinutes();
+      let modifiedDate = date.getMonth() + "/" + date.getDate() + " - " + date.getHours() + ":" + date.getMinutes();
       bidData.push([modifiedDate, bid.bidAmount + " USD"]);
     });
 

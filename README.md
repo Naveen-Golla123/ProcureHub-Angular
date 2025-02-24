@@ -1,7 +1,7 @@
 # ProcureHub
 
 [![Project Presentation](https://img.shields.io/badge/Presentation-Link-blue)](https://docs.google.com/presentation/d/1uLXb4h7tGYHWZXGAceWQQRxSTGV0m13l/edit#slide=id.p4)
-[![Project Video](https://www.youtube.com/watch?v=tkTUCS3YcGk&t=271s)](#)  
+[![Project Video]((https://img.shields.io/badge/Video-Link-red))](https://www.youtube.com/watch?v=tkTUCS3YcGk&t=271s)  
 
 ## Overview
 This project is a full-stack application leveraging modern web technologies and cloud services to deliver a robust, scalable, and efficient solution.  
@@ -39,5 +39,5 @@ This project is a full-stack application leveraging modern web technologies and 
 
 ## 📌 Project Links  
 - **Presentation:** [View Here](https://docs.google.com/presentation/d/1uLXb4h7tGYHWZXGAceWQQRxSTGV0m13l/edit#slide=id.p4)  
-- **Video Demo:** [Watch Here](#) *(Update link when available)*  
+- **Video Demo:** [Watch Here](https://www.youtube.com/watch?v=tkTUCS3YcGk&t=271s)  
 
